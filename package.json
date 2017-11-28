@@ -1,0 +1,13 @@
+{
+  "name": "svelte-routing",
+  "version": "0.0.1",
+  "description": "A Svelte routing library with SSR support",
+  "main": "index.js",
+  "author": "Emil Tholin @tholle1234",
+  "license": "MIT",
+  "repository": "EmilTholin/svelte-routing",
+  "dependencies": {
+    "history": "^4.7.2",
+    "path-to-regexp": "^2.1.0"
+  }
+}
