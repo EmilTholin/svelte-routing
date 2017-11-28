@@ -10,6 +10,10 @@ A Svelte routing library with SSR support.
 npm install --save svelte-routing
 ```
 
+## Example
+
+Look at the [example folder][example-folder-url] for a basic working example. Notice that [`@std/esm`][std-esm-url] has to be used to load ES modules on the server.
+
 ## Usage
 
 ```html
@@ -143,5 +147,7 @@ current URL.
 
 [npm]: https://img.shields.io/npm/v/svelte-routing.svg
 [npm-url]: https://npmjs.com/package/svelte-routing
+[example-folder-url]: https://github.com/EmilTholin/svelte-routing/tree/master/example
+[std-esm-url]: https://github.com/standard-things/esm
 [aria-current-url]: https://tink.uk/using-the-aria-current-attribute
 [regexp-url]: https://www.npmjs.com/package/path-to-regexp

@@ -1,0 +1,27 @@
+<nav>
+  <NavLink exact to="/">Home</NavLink>
+  <NavLink to="/about">About</NavLink>
+  <NavLink to="/blog">Blog</NavLink>
+</nav>
+
+<Route exact path="/"><Home/></Route>
+<Route path="/about"><About/></Route>
+<Route path="/blog"><Blog/></Route>
+
+<script>
+import NavLink from 'svelte-routing/NavLink.html';
+import Route from 'svelte-routing/Route.html';
+import Home from './components/Home.html';
+import About from './components/About.html';
+import Blog from './components/Blog.html';
+
+export default {
+  components: {
+    NavLink,
+    Route,
+    Home,
+    About,
+    Blog
+  }
+};
+</script>
