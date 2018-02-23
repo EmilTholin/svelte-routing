@@ -25,8 +25,8 @@ Look at the [example folder][example-folder-url] for a basic working example. No
 </nav>
 
 <Route exact path="/"><Home/></Route>
-<Route path="/about"><About/></Route>
-<Route path="/blog"><Blog/></Route>
+<Route path="/about" component={{About}}/>
+<Route path="/blog" component={{Blog}}/>
 
 <script>
 import NavLink from 'svelte-routing/NavLink.html';
@@ -36,12 +36,9 @@ import About from './components/About.html';
 import Blog from './components/Blog.html';
 
 export default {
-  components: {
-    NavLink,
-    Route,
-    Home,
-    About,
-    Blog
+  components: { NavLink, Route, Home },
+  data () {
+    return { About, Blog };
   }
 };
 </script>
@@ -134,16 +131,17 @@ class added to it when its `to` property matches the current URL.
 
 #### `Route.html`
 
-A component that will render its children when its `path` property matches the
+A component that will render its `component` property or children when its `path` property matches the
 current URL.
 
 ###### Properties
 
-| Property  | Required | Default Value | Description                                                                                                                         |
-| :-------- | :------- | :------------ | :---------------------------------------------------------------------------------------------------------------------------------- |
-| `path`    | `true`   | `''`          | The component will render its children when `path` matches the URL. Can be any value that [path-to-regexp][regexp-url] understands. |
-| `exact`   |          | `false`       | When `true`, will only match if `path` matches the URL exactly.                                                                     |
-| `strict`  |          | `false`       | When `true`, a `path` that has a trailing slash will only match a URL with a trailing slash.                                        |
+| Property    | Required | Default Value | Description                                                                                                                                                                                                                                                                                                 |
+| :---------- | :------- | :------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `path`      | `true`   | `''`          | The component will render its children when `path` matches the URL. Can be any value that [path-to-regexp][regexp-url] understands.                                                                                                                                                                         |
+| `component` |          | null          | The component constructor that will be rendered when the `path` matches the URL. If `component` is not set, the children of `Route` will be rendered instead. Keep in mind that because of the nature of Svelte slots, the `oncreate` method of children to `Route` will be fired when `Route` is rendered. |
+| `exact`     |          | `false`       | When `true`, will only match if `path` matches the URL exactly.                                                                                                                                                                                                                                             |
+| `strict`    |          | `false`       | When `true`, a `path` that has a trailing slash will only match a URL with a trailing slash.                                                                                                                                                                                                                |
 
 [npm]: https://img.shields.io/npm/v/svelte-routing.svg
 [npm-url]: https://npmjs.com/package/svelte-routing

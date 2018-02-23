@@ -5,8 +5,8 @@
 </nav>
 
 <Route exact path="/"><Home/></Route>
-<Route path="/about"><About/></Route>
-<Route path="/blog"><Blog/></Route>
+<Route path="/about" component={{About}}/>
+<Route path="/blog" component={{Blog}}/>
 
 <script>
 import NavLink from 'svelte-routing/NavLink.html';
@@ -16,12 +16,9 @@ import About from './components/About.html';
 import Blog from './components/Blog.html';
 
 export default {
-  components: {
-    NavLink,
-    Route,
-    Home,
-    About,
-    Blog
+  components: { NavLink, Route, Home },
+  data () {
+    return { About, Blog };
   }
 };
 </script>

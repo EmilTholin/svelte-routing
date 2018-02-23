@@ -1,5 +1,9 @@
 {{#if match !== null}}
-  <slot></slot>
+  {{#if component !== null}}
+    <:Component {component}/>
+  {{else}}
+    <slot></slot>
+  {{/if}}
 {{/if}}
 
 <script>
@@ -14,6 +18,7 @@ export default {
       path: '',
       exact: false,
       strict: false,
+      component: null,
       history
     };
   },
