@@ -1,10 +1,10 @@
 {
   "scripts": {
     "watch": "rollup -c --watch",
-    "start": "node -r @std/esm server.js"
+    "start": "node -r @std/esm -r svelte/ssr/register server.js"
   },
   "dependencies": {
-    "@std/esm": "^0.17.1",
+    "@std/esm": "^0.22.0",
     "express": "^4.16.2",
     "history": "^4.7.2",
     "path-to-regexp": "^2.1.0",

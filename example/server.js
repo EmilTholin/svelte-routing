@@ -1,7 +1,6 @@
 const path = require('path');
 const express = require('express');
 const { createHistory } = require('svelte-routing');
-require('svelte/ssr/register');
 const app = require('./App.html');
 
 const history = createHistory('memory');

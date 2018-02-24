@@ -1,6 +1,6 @@
 {{#if match !== null}}
   {{#if component !== null}}
-    <:Component {component}/>
+    <:Component {component} match={{match}}/>
   {{else}}
     <slot></slot>
   {{/if}}
