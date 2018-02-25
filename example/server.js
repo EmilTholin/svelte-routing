@@ -1,9 +1,9 @@
 const path = require('path');
 const express = require('express');
-const { createHistory } = require('svelte-routing');
+const { createMemoryHistory } = require('svelte-routing');
 const app = require('./App.html');
 
-const history = createHistory('memory');
+const history = createMemoryHistory();
 const server = express();
 
 server.use(express.static(path.join(__dirname, 'dist')));

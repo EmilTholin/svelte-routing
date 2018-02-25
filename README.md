@@ -46,10 +46,10 @@ export default {
 
 ```javascript
 // main.js
-import { createHistory } from 'svelte-routing';
+import { createBrowserHistory } from 'svelte-routing';
 import App from './App.html';
 
-createHistory('browser');
+createBrowserHistory();
 
 const app = new App({
   target: document.getElementById('app'),
@@ -60,11 +60,11 @@ const app = new App({
 ```javascript
 // server.js
 const { createServer } = require('http');
-const { createHistory } = require('svelte-routing');
+const { createMemoryHistory } = require('svelte-routing');
 require('svelte/ssr/register');
 const app = require('./App.html');
 
-const history = createHistory('memory');
+const history = createMemoryHistory();
 
 createServer((req, res) => {
   history.replace(req.url);
@@ -81,21 +81,25 @@ createServer((req, res) => {
 
 ## API
 
-#### `createHistory`
+#### `createBrowserHistory`, `createMemoryHistory`, `createHashHistory`
 
-A function that initializes the history object.
+Functions that initializes the history object.
 
 ```javascript
-import { createHistory } from 'svelte-routing';
+import {
+  createBrowserHistory,
+  createMemoryHistory,
+  createHashHistory
+} from 'svelte-routing';
 
 // Browser history is for use in modern web browsers that support the HTML5 history API
-const history = createHistory('browser');
+const history = createBrowserHistory();
 
 // Memory history is for use in non-DOM environments, like the server and tests
-const history = createHistory('memory');
+const history = createMemoryHistory();
 
 // Hash history is for use in legacy web browsers
-const history = createHistory('hash');
+const history = createHashHistory();
 ```
 
 #### `Link.html`
