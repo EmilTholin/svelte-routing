@@ -1,25 +1,12 @@
-import createMemoryHistory from 'history/es/createMemoryHistory';
-import createHashHistory from 'history/es/createHashHistory';
-import createBrowserHistory from 'history/es/createBrowserHistory';
+import memoryHistory from 'history/es/createMemoryHistory';
+import hashHistory from 'history/es/createHashHistory';
+import browserHistory from 'history/es/createBrowserHistory';
 
 let history;
 
-const createHistory = type => {
-  switch (type) {
-    case 'memory':
-      history = createMemoryHistory();
-      break;
-    case 'hash':
-      history = createHashHistory();
-      break;
-    case 'browser':
-    default:
-      history = createBrowserHistory();
-      break;
-  }
-
-  return history;
-};
+const createMemoryHistory = () => history = memoryHistory();
+const createHashHistory = () => history = hashHistory();
+const createBrowserHistory = () => history = browserHistory();
 
 const getHistory = () => history;
 
@@ -30,4 +17,10 @@ const isModifiedEvent = event => {
 };
 
 export { matchPath } from './matchPath.js';
-export { getHistory, createHistory, isModifiedEvent };
+export {
+  createMemoryHistory,
+  createHashHistory,
+  createBrowserHistory,
+  getHistory,
+  isModifiedEvent
+};
