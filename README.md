@@ -134,6 +134,25 @@ class added to it when its `to` property matches the current URL.
 A component that will render its `component` property or children when its `path` property matches the
 current URL.
 
+Use the `match` object of the matching Route to figure out the values of potential parameters:
+
+```html
+<!-- App.html -->
+<Route path="/:myParam" bind:match>
+  <h1>{{match && match.params.myParam}}</h1>
+</Route>
+```
+
+or:
+
+```html
+<!-- App.html -->
+<Route path="/:myParam" component={{MyComponent}} />
+
+<!-- MyComponent.html -->
+<h1>{{match.params.myParam}}</h1>
+```
+
 ###### Properties
 
 | Property    | Required | Default Value | Description                                                                                                                                                                                                                                                                                                 |
