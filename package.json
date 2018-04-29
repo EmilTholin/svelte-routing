@@ -6,6 +6,9 @@
   "author": "Emil Tholin @tholle1234",
   "license": "MIT",
   "repository": "EmilTholin/svelte-routing",
+  "peerDependencies": {
+    "svelte": "2.x"
+  },
   "dependencies": {
     "history": "^4.7.2",
     "path-to-regexp": "^2.1.0"

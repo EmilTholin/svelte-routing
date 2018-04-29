@@ -1,7 +1,7 @@
 <a
-  href="{{href}}"
-  target="{{target}}"
-  class="{{className}}"
+  href="{href}"
+  target="{target}"
+  class="{className}"
   on:click="handleClick(event)"
 >
   <slot></slot>
@@ -24,7 +24,7 @@ export default {
     };
   },
   computed: {
-    href: (to, history) => {
+    href: ({ to, history }) => {
       const location =
         typeof to === 'string'
           ? createLocation(to, null, null, history.location)
@@ -35,8 +35,7 @@ export default {
   },
   methods: {
     handleClick(event) {
-      const target = this.get('target');
-      const history = this.get('history');
+      const { target, history, to, replace } = this.get();
 
       // Ignore everything but left clicks, let browser handle
       // "target=_blank" etc., ignore clicks with modifier keys
@@ -45,9 +44,6 @@ export default {
       }
 
       event.preventDefault();
-
-      const to = this.get('to');
-      const replace = this.get('replace');
 
       if (replace) {
         history.replace(to);
