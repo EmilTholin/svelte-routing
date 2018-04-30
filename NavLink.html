@@ -1,8 +1,8 @@
 <a
-  href="{{href}}"
-  target="{{target}}"
-  class="{{computedClass}}"
-  aria-current="{{computedAriaCurrent}}"
+  href="{href}"
+  target="{target}"
+  class="{computedClass}"
+  aria-current="{computedAriaCurrent}"
   on:click="handleClick(event)"
 >
   <slot></slot>
@@ -30,20 +30,20 @@ export default {
     };
   },
   computed: {
-    href: (to, history) => {
+    href: ({ to, history }) => {
       const location = createLocation(to, null, null, history.location);
       return history.createHref(location);
     },
-    escapedPath: to => {
+    escapedPath: ({ to }) => {
       const path = typeof to === 'object' ? to.pathname : to;
       // Regex taken from: https://github.com/pillarjs/path-to-regexp/blob/master/index.js#L202
       return path.replace(/([.+*?=^!:${}()[\]|/\\])/g, '\\$1');
     },
-    isActive: (escapedPath, pathname, exact, strict) => {
+    isActive: ({ escapedPath, pathname, exact, strict }) => {
       const path = escapedPath;
       return matchPath(pathname, { path, exact, strict });
     },
-    computedClass: (isActive, className, activeClassName) => {
+    computedClass: ({ isActive, className, activeClassName }) => {
       const classes = [];
 
       if (className !== '') {
@@ -55,14 +55,13 @@ export default {
 
       return classes.join(' ');
     },
-    computedAriaCurrent: (isActive, ariaCurrent) => {
+    computedAriaCurrent: ({ isActive, ariaCurrent }) => {
       return (isActive && ariaCurrent) || 'false';
     }
   },
   methods: {
     handleClick(event) {
-      const target = this.get('target');
-      const history = this.get('history');
+      const { target, history, to, replace } = this.get();
 
       // Ignore everything but left clicks, let browser handle
       // "target=_blank" etc., ignore clicks with modifier keys
@@ -72,9 +71,6 @@ export default {
 
       event.preventDefault();
 
-      const to = this.get('to');
-      const replace = this.get('replace');
-
       if (replace) {
         history.replace(to);
       } else {
@@ -83,7 +79,7 @@ export default {
     }
   },
   oncreate() {
-    const history = this.get('history');
+    const { history } = this.get();
 
     this.unlisten = history.listen(location => {
       const { pathname } = location;

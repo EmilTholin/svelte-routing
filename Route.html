@@ -1,10 +1,10 @@
-{{#if match !== null}}
-  {{#if component !== null}}
-    <:Component {component} match={{match}}/>
-  {{else}}
+{#if match !== null}
+  {#if component !== null}
+    <svelte:component this={component} match={match}/>
+  {:else}
     <slot></slot>
-  {{/if}}
-{{/if}}
+  {/if}
+{/if}
 
 <script>
 import { getHistory, matchPath } from './index.js';
@@ -23,12 +23,12 @@ export default {
     };
   },
   computed: {
-    match: (pathname, path, exact, strict) => {
+    match: ({ pathname, path, exact, strict }) => {
       return matchPath(pathname, { path, exact, strict });
     }
   },
   oncreate() {
-    const history = this.get('history');
+    const { history } = this.get();
 
     this.unlisten = history.listen(location => {
       const { pathname } = location;
