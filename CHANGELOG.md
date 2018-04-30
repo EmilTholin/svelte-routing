@@ -1,3 +1,6 @@
+# 0.4.0
+Moved to Svelte v2 and added the new [link](https://github.com/EmilTholin/svelte-routing#linkjs) and [links](https://github.com/EmilTholin/svelte-routing#linksjs) actions.
+
 # 0.3.0
 Split the `createHistory` function into `createBrowserHistory`, `createMemoryHistory`, `createHashHistory` to allow for better tree shaking of unused history creation code.
 
