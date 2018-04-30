@@ -1,7 +1,7 @@
 import { getHistory, isModifiedEvent } from './index.js';
 
 /**
- * A link actions that can be added to <a href=""> tags rather than using the <Link> component. Example:
+ * A link action that can be added to <a href=""> tags rather than using the <Link> component. Example:
  * ```
  * <a href="post/{postId}" use:link>{post.title}</a>
  * ```

@@ -25,8 +25,8 @@ Look at the [example folder][example-folder-url] for a basic working example. No
 </nav>
 
 <Route exact path="/"><Home/></Route>
-<Route path="/about" component={{About}}/>
-<Route path="/blog" component={{Blog}}/>
+<Route path="/about" component={About}/>
+<Route path="/blog" component={Blog}/>
 
 <script>
 import NavLink from 'svelte-routing/NavLink.html';
@@ -143,7 +143,7 @@ Use the `match` object of the matching Route to figure out the values of potenti
 ```html
 <!-- App.html -->
 <Route path="/:myParam" bind:match>
-  <h1>{{match && match.params.myParam}}</h1>
+  <h1>{match && match.params.myParam}</h1>
 </Route>
 ```
 
@@ -151,10 +151,10 @@ or:
 
 ```html
 <!-- App.html -->
-<Route path="/:myParam" component={{MyComponent}} />
+<Route path="/:myParam" component={MyComponent} />
 
 <!-- MyComponent.html -->
-<h1>{{match.params.myParam}}</h1>
+<h1>{match.params.myParam}</h1>
 ```
 
 ###### Properties
@@ -165,6 +165,40 @@ or:
 | `component` |          | `null`        | The component constructor that will be rendered when the `path` matches the URL. If `component` is not set, the children of `Route` will be rendered instead. Keep in mind that because of the nature of Svelte slots, the `oncreate` method of children to `Route` will be fired when `Route` is rendered. |
 | `exact`     |          | `false`       | When `true`, will only match if `path` matches the URL exactly.                                                                                                                                                                                                                                             |
 | `strict`    |          | `false`       | When `true`, a `path` that has a trailing slash will only match a URL with a trailing slash.                                                                                                                                                                                                                |
+
+
+#### `link.js`
+
+An action used on anchor tags to navigate around the application. You can add an attribute `replace` to replace the current entry in the history stack instead of adding a new one.
+
+```html
+<a href="/" use:link>Home</a>
+<a href="/replace" use:link replace>Replace this URL</a>
+
+<script>
+  import link from 'svelte-routing/link';
+
+  export default {
+    actions: { link }
+  };
+</script>
+```
+
+#### `links.js`
+
+An action used on a root element to make all relative anchor elements navigate around the application. You can add an attribute `replace` on any anchor to replace the current entry in the history stack instead of adding a new one. You can add an attribute `noroute` for this action to skip over the anchor and allow it to use the native browser action.
+
+```html
+<!-- App.html -->
+<div use:links>
+  <MyComponent/>
+</div>
+
+<!-- MyComponent.html -->
+<a href="/">Home</a>
+<a href="/replace" replace>Replace this URL</a>
+<a href="/native" noroute>Use the native action</a>
+```
 
 [npm]: https://img.shields.io/npm/v/svelte-routing.svg
 [npm-url]: https://npmjs.com/package/svelte-routing
