@@ -25,10 +25,10 @@ export default function links(node) {
 }
 
 function findClosest(tagName, el) {
-	while(el && el.tagName !== tagName) {
+  while(el && el.tagName !== tagName) {
     el = el.parentNode;
   }
-	return el;
+  return el;
 }
 
 function onClick(event) {
