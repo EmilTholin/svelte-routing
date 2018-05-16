@@ -24,9 +24,16 @@ export default function links(node) {
   }
 }
 
+function findClosest(tagName, el) {
+  while(el && el.tagName !== tagName) {
+    el = el.parentNode;
+  }
+  return el;
+}
+
 function onClick(event) {
-  const anchor = event.target.closest('a[href]:not([target])');
-  if (!anchor || event.button !== 0 || anchor.host !== location.host || isModifiedEvent(event) ||
+  const anchor = findClosest('A', event.target);
+  if (!anchor || anchor.target || event.button !== 0 || anchor.host !== location.host || isModifiedEvent(event) ||
     anchor.hasAttribute('noroute'))
   {
     return;
