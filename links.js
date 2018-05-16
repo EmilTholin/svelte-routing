@@ -1,5 +1,4 @@
-import { isModifiedEvent } from 'svelte-routing';
-import { history } from 'dabble/routing';
+import { getHistory, isModifiedEvent } from './index.js';
 
 /**
  * An action to be added at a root element of your application to capture all relative links and push them onto the
@@ -34,8 +33,8 @@ function onClick(event) {
   }
   event.preventDefault();
   if (anchor.hasAttribute('replace')) {
-    history.replace(anchor.pathname);
+    getHistory().replace(anchor.pathname);
   } else {
-    history.push(anchor.pathname);
+    getHistory().push(anchor.pathname);
   }
 }
