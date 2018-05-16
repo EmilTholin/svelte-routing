@@ -33,7 +33,7 @@ function findClosest(tagName, el) {
 
 function onClick(event) {
   const anchor = findClosest('A', event.target);
-  if (!anchor || event.button !== 0 || anchor.host !== location.host || isModifiedEvent(event) ||
+  if (!anchor || anchor.target || event.button !== 0 || anchor.host !== location.host || isModifiedEvent(event) ||
     anchor.hasAttribute('noroute'))
   {
     return;
