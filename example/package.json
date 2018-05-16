@@ -16,7 +16,7 @@
     "rollup-plugin-replace": "^2.0.0",
     "rollup-plugin-svelte": "^4.1.0",
     "svelte": "^2.3.0",
-    "svelte-routing": "^0.4.1"
+    "svelte-routing": "^0.4.2"
   },
   "@std/esm": {
     "esm": "js",
