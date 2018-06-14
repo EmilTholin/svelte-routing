@@ -27,6 +27,20 @@ export default {
       return matchPath(pathname, { path, exact, strict });
     }
   },
+  onupdate({ changed, current }) {
+    if (
+      changed.pathname &&
+      current.match !== null &&
+      current.component === null
+    ) {
+      const { importer } = this.get();
+      if (typeof importer === "function") {
+        importer().then(componentModule => {
+          this.set({ component: componentModule.default || componentModule });
+        });
+      }
+    }
+  },
   oncreate() {
     const { history } = this.get();
 
