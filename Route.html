@@ -1,6 +1,6 @@
 {#if match !== null}
   {#if component !== null}
-    <svelte:component this={component} match={match}/>
+    <svelte:component this={component} match={match} {...props} />
   {:else}
     <slot></slot>
   {/if}
@@ -8,6 +8,8 @@
 
 <script>
 import { getHistory, matchPath } from './index.js';
+
+const defaultData = ['match', 'pathname', 'path', 'exact', 'strict', 'component', 'props', 'history'];
 
 export default {
   data() {
@@ -19,12 +21,31 @@ export default {
       exact: false,
       strict: false,
       component: null,
+      props: {},
       history
     };
   },
   computed: {
     match: ({ pathname, path, exact, strict }) => {
       return matchPath(pathname, { path, exact, strict });
+    }
+  },
+  onstate({changed, current, previous}) {
+    const propsChanged = Object.keys(changed).reduce((propsChanged, prop) => {
+      if (propsChanged) return true;
+      if (defaultData.indexOf(prop) === -1) return true;
+      return false;
+    }, false);
+
+    if (propsChanged) {
+      const data = this.get();
+      const props = {};
+
+      Object.keys(data).forEach(key => {
+        if (defaultData.indexOf(key) === -1) props[key] = data[key];
+      });
+
+      this.set({ props });
     }
   },
   oncreate() {
