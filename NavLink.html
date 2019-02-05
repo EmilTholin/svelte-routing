@@ -3,7 +3,7 @@
   target="{target}"
   class="{computedClass}"
   aria-current="{computedAriaCurrent}"
-  on:click="handleClick(event)"
+  on:click="{handleClick}"
 >
   <slot></slot>
 </a>
@@ -12,82 +12,63 @@
 import { createLocation } from 'history';
 import { getHistory, isModifiedEvent, matchPath } from './index.js';
 
-export default {
-  data() {
-    const history = getHistory();
+export let to = '#';
+export let replace = false;
+export let target = '';
+export let exact = false;
+export let strict = false;
+export let activeClassName = 'active';
+export let className = '';
+export let ariaCurrent = true;
 
-    return {
-      to: '#',
-      replace: false,
-      target: '',
-      exact: false,
-      strict: false,
-      pathname: history.location.pathname,
-      activeClassName: 'active',
-      className: '',
-      ariaCurrent: 'true',
-      history
-    };
-  },
-  computed: {
-    href: ({ to, history }) => {
-      const location = createLocation(to, null, null, history.location);
-      return history.createHref(location);
-    },
-    escapedPath: ({ to }) => {
-      const path = typeof to === 'object' ? to.pathname : to;
-      // Regex taken from: https://github.com/pillarjs/path-to-regexp/blob/master/index.js#L202
-      return path.replace(/([.+*?=^!:${}()[\]|/\\])/g, '\\$1');
-    },
-    isActive: ({ escapedPath, pathname, exact, strict }) => {
-      const path = escapedPath;
-      return matchPath(pathname, { path, exact, strict });
-    },
-    computedClass: ({ isActive, className, activeClassName }) => {
-      const classes = [];
+const history = getHistory();
+let pathname = history.location.pathname;
+let href;
+let escapedPath;
+let isActive;
+let computedClass;
+let computedAriaCurrent;
 
-      if (className !== '') {
-        classes.push(className);
-      }
-      if (isActive) {
-        classes.push(activeClassName);
-      }
+$: href = history.createHref(typeof to === 'string' ? createLocation(to, null, null, history.location) : to);
+$: {
+  const path = typeof to === 'object' ? to.pathname : to;
+  escapedPath = path.replace(/([.+*?=^!:${}()[\]|/\\])/g, '\\$1');
+}
+$: isActive = matchPath(pathname, { escapedPath, exact, strict });
+$: {
+  const classes = [];
 
-      return classes.join(' ');
-    },
-    computedAriaCurrent: ({ isActive, ariaCurrent }) => {
-      return (isActive && ariaCurrent) || 'false';
-    }
-  },
-  methods: {
-    handleClick(event) {
-      const { target, history, to, replace } = this.get();
-
-      // Ignore everything but left clicks, let browser handle
-      // "target=_blank" etc., ignore clicks with modifier keys
-      if (event.button !== 0 || target !== '' || isModifiedEvent(event)) {
-        return;
-      }
-
-      event.preventDefault();
-
-      if (replace) {
-        history.replace(to);
-      } else {
-        history.push(to);
-      }
-    }
-  },
-  oncreate() {
-    const { history } = this.get();
-
-    this.unlisten = history.listen(location => {
-      const { pathname } = location;
-      this.set({ pathname });
-    });
-  },
-  ondestroy() {
-    this.unlisten();
+  if (className !== '') {
+    classes.push(className);
   }
-};
+  if (isActive) {
+    classes.push(activeClassName);
+  }
+
+  computedClass = classes.join(' ');
+}
+$: computedAriaCurrent = (isActive && ariaCurrent) || 'false';
+
+
+function handleClick(event) {
+  // Ignore everything but left clicks, let browser handle
+  // "target=_blank" etc., ignore clicks with modifier keys
+  if (event.button !== 0 || target !== '' || isModifiedEvent(event)) {
+    return;
+  }
+
+  event.preventDefault();
+
+  if (replace) {
+    history.replace(to);
+  } else {
+    history.push(to);
+  }
+}
+
+const unlisten = history.listen(location => {
+  pathname = location.pathname;
+});
+
+onDestroy(unlisten);
 </script>

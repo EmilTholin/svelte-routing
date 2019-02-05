@@ -16,6 +16,7 @@ const isModifiedEvent = event => {
   );
 };
 
+export const ROUTE_MATCH = {};
 export { matchPath } from './matchPath.js';
 export {
   createMemoryHistory,

@@ -1,5 +1,5 @@
-{#if match !== null}
-  {#if component !== null}
+{#if match}
+  {#if component}
     <svelte:component this={component} match={match}/>
   {:else}
     <slot></slot>
@@ -7,36 +7,28 @@
 {/if}
 
 <script>
-import { getHistory, matchPath } from './index.js';
+import { getHistory, matchPath, ROUTE_MATCH } from './index.js';
+import { writable } from 'svelte/store.js';
+import { setContext, onDestroy } from 'svelte';
 
-export default {
-  data() {
-    const history = getHistory();
+export let path = '';
+export let exact = false;
+export let strict = false;
+export let match;
+export let component;
 
-    return {
-      pathname: history.location.pathname,
-      path: '',
-      exact: false,
-      strict: false,
-      component: null,
-      history
-    };
-  },
-  computed: {
-    match: ({ pathname, path, exact, strict }) => {
-      return matchPath(pathname, { path, exact, strict });
-    }
-  },
-  oncreate() {
-    const { history } = this.get();
+const history = getHistory();
+const matchStore = writable(null);
+let pathname = history.location.pathname;
 
-    this.unlisten = history.listen(location => {
-      const { pathname } = location;
-      this.set({ pathname });
-    });
-  },
-  ondestroy() {
-    this.unlisten();
-  }
-};
+$: match = matchPath(pathname, { path, exact, strict });
+$: matchStore.set(match);
+
+setContext(ROUTE_MATCH, matchStore);
+
+const unlisten = history.listen(location => {
+  pathname = location.pathname;
+});
+
+onDestroy(unlisten);
 </script>

@@ -5,8 +5,12 @@ import { getHistory, isModifiedEvent } from './index.js';
  * history stack. Example:
  * ```html
  * <div use:links>
- *   <Route exact path="/" component={Home} bind:match/>
- *   <Route exact path="/p/:projectId/:docId?" component={ProjectScreen}/>
+ *   <Route exact path="/">
+ *     <Home/>
+ *   </Route>
+ *   <Route exact path="/p/:projectId/:docId?">
+ *     <ProjectScreen/>
+ *   </Route>
  *
  *   {#each projects as project}
  *     <a href="/p/{project.id}">{project.title}</a>

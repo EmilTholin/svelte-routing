@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": "EmilTholin/svelte-routing",
   "peerDependencies": {
-    "svelte": "2.x"
+    "svelte": "3.x"
   },
   "dependencies": {
     "history": "^4.7.2",
