@@ -1,6 +1,6 @@
 body {
-  font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue',
-    Helvetica, Arial, 'Lucida Grande', sans-serif;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+    Helvetica, Arial, "Lucida Grande", sans-serif;
   font-weight: 300;
   font-size: 16px;
   margin: 0;
@@ -21,7 +21,8 @@ nav a {
 }
 
 a.active,
-h1 {
+h1,
+h2 {
   color: #da99da;
 }
 
@@ -37,6 +38,8 @@ a {
 }
 
 p {
+  max-width: 768px;
+  margin: 0 auto;
   color: white;
   padding: 1em;
 }

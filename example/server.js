@@ -1,20 +1,19 @@
-const path = require('path');
-const express = require('express');
-const { createMemoryHistory } = require('svelte-routing');
-const app = require('./App.html');
+const path = require("path");
+const express = require("express");
+const app = require("./public/App.js");
 
-const history = createMemoryHistory();
 const server = express();
 
-server.use(express.static(path.join(__dirname, 'dist')));
+server.use(express.static(path.join(__dirname, "public")));
 
-server.get('*', function(req, res) {
-  history.replace(req.url);
+server.get("*", function(req, res) {
+  const { html } = app.render({ url: req.url });
 
   res.write(`
     <!DOCTYPE html>
-    <link rel="stylesheet" href="/styles.css">
-    <div id="app">${app.render()}</div>
+    <link rel='stylesheet' href='/global.css'>
+    <link rel='stylesheet' href='/bundle.css'>
+    <div id="app">${html}</div>
     <script src="/bundle.js"></script>
   `);
 

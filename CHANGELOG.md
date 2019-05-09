@@ -1,11 +1,28 @@
+# 1.0.0
+
+- Moved to Svelte 3.
+- It's now required for all `Route` and `Link` components to have a `Router` ancestor.
+- `NavLink` was removed in favour for a more versatile `Link` component. Check the userland `NavLink` component in the `example` directory for an example.
+- The SSR component no longer needs to be compiled at runtime with the help of [esm](https://github.com/standard-things/esm) as there is no longer a dependency on the `history` library. You can compile a separate CJS bundle for the server and pass in a prop to the topmost component and use that as the `url` property for the `Router`, which will force the URL for all descendants.
+- All component filename extensions have been changed to `.svelte`.
+- Hash routing is no longer supported.
+- The entire API of the library is now exported from the `src/index.js` file, so importing from the library is now much more pleasant.
+
+```javascript
+import { Router, Route, Link } from "svelte-routing";
+```
+
 # 0.4.0
-Moved to Svelte v2 and added the new [link](https://github.com/EmilTholin/svelte-routing#linkjs) and [links](https://github.com/EmilTholin/svelte-routing#linksjs) actions.
+
+- Moved to Svelte v2 and added the new [link](https://github.com/EmilTholin/svelte-routing#linkjs) and [links](https://github.com/EmilTholin/svelte-routing#linksjs) actions.
 
 # 0.3.0
-Split the `createHistory` function into `createBrowserHistory`, `createMemoryHistory`, `createHashHistory` to allow for better tree shaking of unused history creation code.
+
+- Split the `createHistory` function into `createBrowserHistory`, `createMemoryHistory`, `createHashHistory` to allow for better tree shaking of unused history creation code.
 
 # 0.2.0
-Added the ability to access the match object in a matched route:
+
+- Added the ability to access the match object in a matched route:
 
 ```html
 <!-- App.html -->
@@ -18,16 +35,17 @@ or:
 
 ```html
 <!-- App.html -->
-<Route path="/:myParam" component={{MyComponent}} />
+<Route path="/:myParam" component="{{MyComponent}}" />
 
 <!-- MyComponent.html -->
 <h1>{{match.params.myParam}}</h1>
 ```
 
 # 0.1.0
-Added the ability to give a component constructor to a route with the `component` property:
+
+- Added the ability to give a component constructor to a route with the `component` property:
 
 ```html
 <!-- App.html -->
-<Route path="/:myParam" component={{MyComponent}} />
+<Route path="/:myParam" component="{{MyComponent}}" />
 ```
