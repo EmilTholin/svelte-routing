@@ -42,7 +42,7 @@ npm install --save svelte-routing
 
 ```javascript
 // main.js
-import App from "./App.html";
+import App from "./App.svelte";
 
 const app = new App({
   target: document.getElementById("app"),
@@ -146,7 +146,7 @@ An action used on anchor tags to navigate around the application. You can add an
 An action used on a root element to make all relative anchor elements navigate around the application. You can add an attribute `replace` on any anchor to replace the current entry in the history stack instead of adding a new one. You can add an attribute `noroute` for this action to skip over the anchor and allow it to use the native browser action.
 
 ```html
-<!-- App.html -->
+<!-- App.svelte -->
 <script>
   import { links } from "svelte-routing";
 </script>
