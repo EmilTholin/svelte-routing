@@ -46,15 +46,16 @@
     return { path, uri };
   });
 
-  function registerRoute(route) {
+  function registerRoute(route, exact) {
     const { path: basepath } = $base;
     let { path } = route;
 
     // We store the original path in the _path property so we can reuse
     // it when the basepath changes. The only thing that matters is that
     // the route reference is intact, so mutation is fine.
-    route._path = path;
-    route.path = combinePaths(basepath, path);
+    if(!exact) {
+      route.path = combinePaths(basepath, path);
+    }
 
     if (typeof window === "undefined") {
       // In SSR we should set the activeRoute immediately if it is a match.
