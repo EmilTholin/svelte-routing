@@ -1,3 +1,19 @@
+# 1.1.0
+
+Added the ability to give `Route` path wildcards a custom name.
+
+```html
+<!-- App.svelte -->
+<Route path="page/*wildcardName" component={Page} />
+
+<!-- Page.svelte -->
+<script>
+  export let wildcardName;
+</script>
+
+<h1>{wildcardName}</h1>
+```
+
 # 1.0.0
 
 - Moved to Svelte 3.
@@ -14,15 +30,15 @@ import { Router, Route, Link } from "svelte-routing";
 
 # 0.4.0
 
-- Moved to Svelte v2 and added the new [link](https://github.com/EmilTholin/svelte-routing#linkjs) and [links](https://github.com/EmilTholin/svelte-routing#linksjs) actions.
+Moved to Svelte v2 and added the new [link](https://github.com/EmilTholin/svelte-routing#linkjs) and [links](https://github.com/EmilTholin/svelte-routing#linksjs) actions.
 
 # 0.3.0
 
-- Split the `createHistory` function into `createBrowserHistory`, `createMemoryHistory`, `createHashHistory` to allow for better tree shaking of unused history creation code.
+Split the `createHistory` function into `createBrowserHistory`, `createMemoryHistory`, `createHashHistory` to allow for better tree shaking of unused history creation code.
 
 # 0.2.0
 
-- Added the ability to access the match object in a matched route:
+Added the ability to access the match object in a matched route:
 
 ```html
 <!-- App.html -->
@@ -43,7 +59,7 @@ or:
 
 # 0.1.0
 
-- Added the ability to give a component constructor to a route with the `component` property:
+Added the ability to give a component constructor to a route with the `component` property:
 
 ```html
 <!-- App.html -->
