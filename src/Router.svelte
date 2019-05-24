@@ -40,8 +40,9 @@
 
     const { path: basepath } = base;
     const { route, uri } = activeRoute;
-    // Remove the /* from the end for child Routes relative paths.
-    const path = route.default ? basepath : route.path.replace(/\*$/, "");
+    // Remove the potential /* or /*splatname from
+    // the end of the child Routes relative paths.
+    const path = route.default ? basepath : route.path.replace(/\*.*$/, "");
 
     return { path, uri };
   });

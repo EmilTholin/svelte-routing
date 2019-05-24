@@ -30,6 +30,7 @@ export function startsWith(string, search) {
 function isRootSegment(segment) {
   return segment === "";
 }
+
 /**
  * Check if `segment` is a dynamic segment
  * @param {string} segment
@@ -38,13 +39,14 @@ function isRootSegment(segment) {
 function isDynamic(segment) {
   return paramRe.test(segment);
 }
+
 /**
  * Check if `segment` is a splat
  * @param {string} segment
  * @return {boolean}
  */
 function isSplat(segment) {
-  return segment === "*";
+  return segment[0] === "*";
 }
 
 /**
@@ -167,12 +169,13 @@ function pick(routes, uri) {
       const routeSegment = routeSegments[index];
       const uriSegment = uriSegments[index];
 
-      let isSplat = routeSegment === "*";
-      if (isSplat) {
+      if (isSplat(routeSegment)) {
         // Hit a splat, just grab the rest, and return a match
         // uri:   /files/documents/work
-        // route: /files/*
-        params["*"] = uriSegments
+        // route: /files/* or /files/*splatname
+        const splatName = routeSegment === '*' ? '*' : routeSegment.slice(1);
+
+        params[splatName] = uriSegments
           .slice(index)
           .map(decodeURIComponent)
           .join("/");

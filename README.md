@@ -98,7 +98,9 @@ A component used to navigate around the application.
 
 #### `Route`
 
-A component that will render its `component` property or children when its ancestor `Router` component decides it is the best match. Potential route parameters will be spread on the rendered `component`.
+A component that will render its `component` property or children when its ancestor `Router` component decides it is the best match.
+
+Potential route parameters will be passed to the rendered `component` as properties. A wildcard `*` can be given a name with `*wildcardName` to pass the wildcard string as the `wildcardName` property instead of as the `*` property.
 
 ###### Properties
 
