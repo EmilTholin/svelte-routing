@@ -18,13 +18,7 @@
   let routeParams = {};
 
   $: if ($activeRoute && $activeRoute.route === route) {
-    const { params } = $activeRoute;
-    routeParams = Object.keys(params).reduce((acc, param) => {
-      if (param !== "*") {
-        acc[param] = params[param];
-      }
-      return acc;
-    }, {});
+    routeParams = $activeRoute.params;
   }
 
   registerRoute(route);
