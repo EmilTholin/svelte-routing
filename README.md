@@ -68,6 +68,17 @@ createServer((req, res) => {
 }).listen(3000);
 ```
 
+```html
+<!-- BlogPost.svelte -->
+<script>
+  export let id;
+</script>
+
+<div>
+  The BlogPost with id = {id}
+</div>
+```
+
 ## API
 
 #### `Router`
