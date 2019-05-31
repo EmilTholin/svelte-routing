@@ -169,11 +169,11 @@ function pick(routes, uri) {
       const routeSegment = routeSegments[index];
       const uriSegment = uriSegments[index];
 
-      if (isSplat(routeSegment)) {
+      if (routeSegment !== undefined && isSplat(routeSegment)) {
         // Hit a splat, just grab the rest, and return a match
         // uri:   /files/documents/work
         // route: /files/* or /files/*splatname
-        const splatName = routeSegment === '*' ? '*' : routeSegment.slice(1);
+        const splatName = routeSegment === "*" ? "*" : routeSegment.slice(1);
 
         params[splatName] = uriSegments
           .slice(index)
@@ -315,7 +315,7 @@ function resolve(to, base) {
 function combinePaths(basepath, path) {
   return `${stripSlashes(
     path === "/" ? basepath : `${stripSlashes(basepath)}/${stripSlashes(path)}`
-  )}/*`;
+  )}/`;
 }
 
 /**
