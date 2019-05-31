@@ -1,11 +1,10 @@
 <script>
-  import { getContext, setContext, onDestroy } from "svelte";
-  import { writable, derived } from "svelte/store";
+  import { getContext, onDestroy } from "svelte";
   import { ROUTER } from "./contexts.js";
-  import { stripSlashes } from "./utils.js";
 
   export let path = "";
   export let component = null;
+  let props;
 
   const { registerRoute, unregisterRoute, activeRoute } = getContext(ROUTER);
 
@@ -21,6 +20,12 @@
     routeParams = $activeRoute.params;
   }
 
+  $: setProps($$props);
+
+  function setProps({ path, component, ...rest }) {
+    props = rest;
+  }
+
   registerRoute(route);
 
   // There is no need to unregister Routes in SSR since it will all be
@@ -34,7 +39,7 @@
 
 {#if $activeRoute !== null && $activeRoute.route === route}
   {#if component !== null}
-    <svelte:component this="{component}" {...routeParams} />
+    <svelte:component this="{component}" {...routeParams} {...props} />
   {:else}
     <slot></slot>
   {/if}
