@@ -1,3 +1,20 @@
+# 1.2.0
+
+Added functionality for passing all the extra `Route` properties to the rendered `component`.
+
+```html
+<!-- App.svelte -->
+<Route path="page" component={Page} foo="foo" bar="bar" />
+
+<!-- Page.svelte -->
+<script>
+  export let foo;
+  export let bar;
+</script>
+
+<h1>{foo} {bar}</h1>
+```
+
 # 1.1.0
 
 Added the ability to give `Route` path wildcards a custom name.

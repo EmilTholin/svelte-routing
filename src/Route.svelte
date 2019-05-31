@@ -4,7 +4,6 @@
 
   export let path = "";
   export let component = null;
-  let props;
 
   const { registerRoute, unregisterRoute, activeRoute } = getContext(ROUTER);
 
@@ -15,15 +14,15 @@
     default: path === ""
   };
   let routeParams = {};
+  let routeProps = {};
 
   $: if ($activeRoute && $activeRoute.route === route) {
     routeParams = $activeRoute.params;
   }
 
-  $: setProps($$props);
-
-  function setProps({ path, component, ...rest }) {
-    props = rest;
+  $: {
+    const { path, component, ...rest } = $$props;
+    routeProps = rest;
   }
 
   registerRoute(route);
@@ -39,7 +38,7 @@
 
 {#if $activeRoute !== null && $activeRoute.route === route}
   {#if component !== null}
-    <svelte:component this="{component}" {...routeParams} {...props} />
+    <svelte:component this="{component}" {...routeParams} {...routeProps} />
   {:else}
     <slot></slot>
   {/if}
