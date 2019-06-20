@@ -11,15 +11,21 @@
   const locationContext = getContext(LOCATION);
   const routerContext = getContext(ROUTER);
 
-  const routes = writable([]);
-  const activeRoute = writable(null);
-  let hasActiveRoute = false; // Used in SSR to synchronously set that a Route is active.
-
   // If locationContext is not set, this is the topmost Router in the tree.
   // If the `url` prop is given we force the location to it.
   const location =
     locationContext ||
     writable(url ? { pathname: url } : globalHistory.location);
+
+  const routes = writable([]);
+
+  // When in browser, activeRoute reacts to changes on routes or location at runtime.
+  const activeRoute =
+    typeof window === 'undefined'
+    ? writable(null)
+    : derived([routes, location], ([routes, location]) => pick(routes, location.pathname));
+
+  let hasActiveRoute = false; // Used in SSR to synchronously set that a Route is active.
 
   // If routerContext is set, the routerBase of the parent Router
   // will be the base for this Router's descendants.
@@ -94,14 +100,6 @@
       rs.forEach(r => (r.path = combinePaths(basepath, r._path)));
       return rs;
     });
-  }
-  // This reactive statement will be run when the Router is created
-  // when there are no Routes and then again the following tick, so it
-  // will not find an active Route in SSR and in the browser it will only
-  // pick an active Route after all Routes have been registered.
-  $: {
-    const bestMatch = pick($routes, $location.pathname);
-    activeRoute.set(bestMatch);
   }
 
   if (!locationContext) {
