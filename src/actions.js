@@ -12,7 +12,7 @@ import { shouldNavigate } from "./utils.js";
  */
 function link(node) {
   function onClick(event) {
-    const anchor = event.target;
+    const anchor = event.currentTarget;
 
     if (
       anchor.target === "" &&
