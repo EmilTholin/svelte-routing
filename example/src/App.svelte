@@ -6,7 +6,6 @@
   import Blog from "./routes/Blog.svelte";
   import NoMatch from "./routes/NoMatch.svelte";
 
-
   // Used for SSR. A falsy value is ignored by the Router.
   export let url = "";
 </script>
