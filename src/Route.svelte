@@ -40,6 +40,6 @@
   {#if component !== null}
     <svelte:component this="{component}" {...routeParams} {...routeProps} />
   {:else}
-    <slot {routeProps} {routeParams}></slot>
+    <slot props={{ ...routeProps, ...routeParams }}></slot>
   {/if}
 {/if}
