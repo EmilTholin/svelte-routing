@@ -16,7 +16,7 @@
   let href, isPartiallyCurrent, isCurrent, props;
   $: href = to === "/" ? $base.uri : resolve(to, $base.uri);
   $: isPartiallyCurrent = startsWith(getPath($location, $base.hash), href);
-  $: isCurrent = href === getPath($location, hash);
+  $: isCurrent = href === getPath($location, $base.hash);
   $: ariaCurrent = isCurrent ? "page" : undefined;
   $: props = getProps({
     location: $location,
@@ -32,7 +32,7 @@
       event.preventDefault();
       // Don't push another entry to the history stack when the user
       // clicks on a Link to the page they are currently on.
-      const shouldReplace = getPath($location, hash) === href || replace;
+      const shouldReplace = getPath($location, $base.hash) === href || replace;
       navigate(href, { state, replace: shouldReplace });
     }
   }

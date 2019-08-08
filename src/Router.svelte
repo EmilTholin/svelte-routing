@@ -31,7 +31,7 @@
     : writable({
         path: basepath,
         uri: basepath,
-        hash: hash
+        hash
       });
 
   const routerBase = derived([base, activeRoute], ([base, activeRoute]) => {
