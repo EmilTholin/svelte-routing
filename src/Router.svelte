@@ -7,6 +7,7 @@
 
   export let basepath = "/";
   export let url = null;
+  export let hash = false;
 
   const locationContext = getContext(LOCATION);
   const routerContext = getContext(ROUTER);
@@ -100,7 +101,7 @@
   // will not find an active Route in SSR and in the browser it will only
   // pick an active Route after all Routes have been registered.
   $: {
-    const bestMatch = pick($routes, $location.pathname);
+    const bestMatch = pick($routes, hash ? $location.hash : $location.pathname);
     activeRoute.set(bestMatch);
   }
 
