@@ -3,7 +3,7 @@
   import { writable, derived } from "svelte/store";
   import { LOCATION, ROUTER } from "./contexts.js";
   import { globalHistory } from "./history.js";
-  import { pick, match, stripSlashes, combinePaths } from "./utils.js";
+  import { pick, match, stripSlashes, combinePaths, getLocation } from "./utils.js";
 
   export let basepath = "/";
   export let url = null;
@@ -30,7 +30,8 @@
     ? routerContext.routerBase
     : writable({
         path: basepath,
-        uri: basepath
+        uri: basepath,
+        hash: hash
       });
 
   const routerBase = derived([base, activeRoute], ([base, activeRoute]) => {
@@ -66,7 +67,7 @@
         return;
       }
 
-      const matchingRoute = match(route, hash ? $location.hash : $location.pathname);
+      const matchingRoute = match(route, getLocation($location, hash));
       if (matchingRoute) {
         activeRoute.set(matchingRoute);
         hasActiveRoute = true;
@@ -101,7 +102,7 @@
   // will not find an active Route in SSR and in the browser it will only
   // pick an active Route after all Routes have been registered.
   $: {
-    const bestMatch = pick($routes, hash ? $location.hash : $location.pathname);
+    const bestMatch = pick($routes, getLocation($location, hash));
     activeRoute.set(bestMatch);
   }
 

@@ -330,4 +330,13 @@ function shouldNavigate(event) {
   );
 }
 
+/**
+ * Determines location base on hash settings
+ * @param {*} $location - Location reference.
+ * @param {*} usingHash - Dictates whether or not client is using hash routing. 
+ */
+function getLocation(location, usingHash = false) {
+  return usingHash ? location.hash : location.pathname; 
+}
+
 export { stripSlashes, pick, match, resolve, combinePaths, shouldNavigate };
