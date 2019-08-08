@@ -66,7 +66,7 @@
         return;
       }
 
-      const matchingRoute = match(route, $location.pathname);
+      const matchingRoute = match(route, hash ? $location.hash : $location.pathname);
       if (matchingRoute) {
         activeRoute.set(matchingRoute);
         hasActiveRoute = true;
