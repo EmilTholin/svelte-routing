@@ -1,3 +1,13 @@
+# 1.3.0
+
+Added functionality to pass potential `Route` path parameters back to the parent using props, so they can be exposed to the slot template using `let:params`.
+
+```html
+<Route path="blog/:id" let:params>
+  <BlogPost id="{params.id}" />
+</Route>
+```
+
 # 1.2.0
 
 Added functionality for passing all the extra `Route` properties to the rendered `component`.
