@@ -104,6 +104,14 @@ All properties other than `path` and `component` given to the `Route` will be pa
 
 Potential route parameters will be passed to the rendered `component` as properties. A wildcard `*` can be given a name with `*wildcardName` to pass the wildcard string as the `wildcardName` property instead of as the `*` property.
 
+Potential route parameters are passed back to the parent using props, so they can be exposed to the slot template using `let:params`.
+
+```html
+<Route path="blog/:id" let:params>
+  <BlogPost id="{params.id}" />
+</Route>
+```
+
 ###### Properties
 
 |  Property   | Required | Default Value | Description                                                                                                                                                              |
