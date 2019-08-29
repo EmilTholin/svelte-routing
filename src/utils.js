@@ -4,6 +4,8 @@
  * https://github.com/reach/router/blob/master/LICENSE
  * */
 
+import queryString from "query-string";
+
 const paramRe = /^:(.+)/;
 
 const SEGMENT_POINTS = 4;
@@ -138,12 +140,11 @@ function rankRoutes(routes) {
  * @param {string} uri
  * @return {?object}
  */
-function pick(routes, uri) {
+function pick(routes, uri, search) {
   let match;
   let default_;
 
-  const [uriPathname] = uri.split("?");
-  const uriSegments = segmentize(uriPathname);
+  const uriSegments = segmentize(uri);
   const isRootUri = uriSegments[0] === "";
   const ranked = rankRoutes(routes);
 
@@ -205,6 +206,21 @@ function pick(routes, uri) {
     }
 
     if (!missed) {
+      if (route.search !== undefined) {
+        const routeParams = queryString.parse(route.search);
+        const activeParams = queryString.parse(search);
+        for (const key in routeParams) {
+          if (routeParams[key][0] == ':') {
+            const [varname,defval] = routeParams[key].substr(1).split('|', 2);
+            if (key in activeParams) {
+              params[varname] = activeParams[key];
+            } else if (defval !== undefined) {
+              params[varname] = defval;
+            }
+          }
+        }
+      }
+
       match = {
         route,
         params,
@@ -223,8 +239,8 @@ function pick(routes, uri) {
  * @param {string} uri
  * @return {?object}
  */
-function match(route, uri) {
-  return pick([route], uri);
+function match(route, uri, search) {
+  return pick([route], uri, search);
 }
 
 /**

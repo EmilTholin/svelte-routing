@@ -55,6 +55,7 @@
     // it when the basepath changes. The only thing that matters is that
     // the route reference is intact, so mutation is fine.
     route._path = path;
+    [path, route.search] = path.split('?', 2);
     route.path = combinePaths(basepath, path);
 
     if (typeof window === "undefined") {
@@ -65,7 +66,7 @@
         return;
       }
 
-      const matchingRoute = match(route, $location.pathname);
+      const matchingRoute = match(route, $location.pathname, $location.search);
       if (matchingRoute) {
         activeRoute.set(matchingRoute);
         hasActiveRoute = true;
@@ -100,7 +101,7 @@
   // will not find an active Route in SSR and in the browser it will only
   // pick an active Route after all Routes have been registered.
   $: {
-    const bestMatch = pick($routes, $location.pathname);
+    const bestMatch = pick($routes, $location.pathname, $location.search);
     activeRoute.set(bestMatch);
   }
 
