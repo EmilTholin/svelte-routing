@@ -1,11 +1,12 @@
 <script>
   import { getContext, onDestroy } from "svelte";
-  import { ROUTER } from "./contexts.js";
+  import { ROUTER, LOCATION } from "./contexts.js";
 
   export let path = "";
   export let component = null;
 
   const { registerRoute, unregisterRoute, activeRoute } = getContext(ROUTER);
+  const location = getContext(LOCATION);
 
   const route = {
     path,
@@ -38,8 +39,8 @@
 
 {#if $activeRoute !== null && $activeRoute.route === route}
   {#if component !== null}
-    <svelte:component this="{component}" {...routeParams} {...routeProps} />
+    <svelte:component this="{component}" location={$location} {...routeParams} {...routeProps}  />
   {:else}
-    <slot params="{routeParams}"></slot>
+    <slot params="{routeParams}" location={$location}></slot>
   {/if}
 {/if}
