@@ -1,3 +1,31 @@
+# 1.4.0
+
+Added functionality for passing the `location` to the rendered Route `component` and slot.
+
+```html
+<!-- App.svelte -->
+<Route path="blog" component="{Blog}" />
+
+<!-- Blog.svelte -->
+<script>
+  import queryString from "query-string";
+
+  export let location;
+
+  let queryParams;
+  $: queryParams = queryString.parse(location.search);
+</script>
+
+<h1>Blog</h1>
+<p>{queryParams.foo}</p>
+
+<!-- App.svelte -->
+<Route path="blog" let:location>
+  <h1>Blog</h1>
+  <p>{location.search}</p>
+</Route>
+```
+
 # 1.3.0
 
 Added functionality to pass potential `Route` path parameters back to the parent using props, so they can be exposed to the slot template using `let:params`.
