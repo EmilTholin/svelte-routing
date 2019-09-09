@@ -7,6 +7,7 @@
 
   export let basepath = "/";
   export let url = null;
+  export let caseSensitive = false;
 
   const locationContext = getContext(LOCATION);
   const routerContext = getContext(ROUTER);
@@ -100,6 +101,10 @@
   // will not find an active Route in SSR and in the browser it will only
   // pick an active Route after all Routes have been registered.
   $: {
+    if (!caseSensitive) {
+      $location.pathname = $location.pathname.toLowerCase();
+    }
+
     const bestMatch = pick($routes, $location.pathname);
     activeRoute.set(bestMatch);
   }
@@ -127,4 +132,4 @@
   });
 </script>
 
-<slot></slot>
+<slot />
