@@ -20,7 +20,9 @@ npm install --save svelte-routing
 <!-- App.svelte -->
 <script>
   import { Router, Link, Route } from "svelte-routing";
-  import { Home, About, Blog, BlogPost } from "./routes";
+  import Home from "./routes/Home.svelte";
+  import About from "./routes/About.svelte";
+  import Blog from "./routes/Blog.svelte";
 
   export let url = "";
 </script>
