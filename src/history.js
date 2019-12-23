@@ -54,6 +54,7 @@ function createHistory(source, options) {
 
       location = getLocation(source);
       listeners.forEach(listener => listener({ location, action: "PUSH" }));
+      document.activeElement.blur();
     }
   };
 }
