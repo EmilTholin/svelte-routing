@@ -20,7 +20,7 @@ function link(node) {
       shouldNavigate(event)
     ) {
       event.preventDefault();
-      navigate(anchor.pathname, { replace: anchor.hasAttribute("replace") });
+      navigate(anchor.pathname + anchor.search, { replace: anchor.hasAttribute("replace") });
     }
   }
 
