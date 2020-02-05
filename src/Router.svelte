@@ -127,4 +127,4 @@
   });
 </script>
 
-<slot></slot>
+<slot route={$activeRoute && $activeRoute.uri}></slot>
