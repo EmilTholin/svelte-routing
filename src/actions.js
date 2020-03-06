@@ -1,5 +1,5 @@
 import { navigate } from "./history.js";
-import { shouldNavigate } from "./utils.js";
+import { shouldNavigate, hostMatches } from "./utils.js";
 
 /**
  * A link action that can be added to <a href=""> tags rather
@@ -16,7 +16,7 @@ function link(node) {
 
     if (
       anchor.target === "" &&
-      anchor.host === location.host &&
+      hostMatches(anchor) &&
       shouldNavigate(event)
     ) {
       event.preventDefault();
@@ -64,7 +64,7 @@ function links(node) {
     if (
       anchor &&
       anchor.target === "" &&
-      anchor.host === location.host &&
+      hostMatches(anchor) &&
       shouldNavigate(event) &&
       !anchor.hasAttribute("noroute")
     ) {

@@ -330,4 +330,14 @@ function shouldNavigate(event) {
   );
 }
 
-export { stripSlashes, pick, match, resolve, combinePaths, shouldNavigate };
+function hostMatches(anchor) {
+  const host = location.host
+  return (
+    anchor.host == host ||
+    // svelte seems to kill anchor.host value in ie11, so fall back to checking href
+    anchor.href.indexOf(`https://${host}`) === 0 ||
+    anchor.href.indexOf(`http://${host}`) === 0
+  )
+}
+
+export { stripSlashes, pick, match, resolve, combinePaths, shouldNavigate, hostMatches };
