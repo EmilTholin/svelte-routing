@@ -8,13 +8,14 @@
   export let replace = false;
   export let state = {};
   export let getProps = () => ({});
-  export let className = "";
+  export let className;
 
   const { base } = getContext(ROUTER);
   const location = getContext(LOCATION);
   const dispatch = createEventDispatcher();
 
   let href, isPartiallyCurrent, isCurrent, props;
+
   $: href = to === "/" ? $base.uri : resolve(to, $base.uri);
   $: isPartiallyCurrent = startsWith($location.pathname, href);
   $: isCurrent = href === $location.pathname;
@@ -26,7 +27,6 @@
     isCurrent,
     class: className
   });
-
   function onClick(event) {
     dispatch("click", event);
 
@@ -40,6 +40,6 @@
   }
 </script>
 
-<a {href} aria-current={ariaCurrent} on:click={onClick} {...props}>
+<a {href} aria-current={ariaCurrent} on:click={onClick} {...$$props}>
   <slot />
 </a>
