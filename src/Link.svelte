@@ -25,7 +25,7 @@
     href,
     isPartiallyCurrent,
     isCurrent,
-    class: className
+    class: className ? className : ""
   });
   function onClick(event) {
     dispatch("click", event);
