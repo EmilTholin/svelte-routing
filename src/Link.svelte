@@ -8,6 +8,7 @@
   export let replace = false;
   export let state = {};
   export let getProps = () => ({});
+  export let className = "";
 
   const { base } = getContext(ROUTER);
   const location = getContext(LOCATION);
@@ -22,7 +23,8 @@
     location: $location,
     href,
     isPartiallyCurrent,
-    isCurrent
+    isCurrent,
+    class: className
   });
 
   function onClick(event) {
@@ -38,6 +40,6 @@
   }
 </script>
 
-<a href="{href}" aria-current="{ariaCurrent}" on:click="{onClick}" {...props}>
-  <slot></slot>
+<a {href} aria-current={ariaCurrent} on:click={onClick} {...props}>
+  <slot />
 </a>
