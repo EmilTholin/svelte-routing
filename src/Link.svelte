@@ -11,6 +11,7 @@
   export let className;
 
   $$props.class = className;
+  delete $$props.className;
 
   const { base } = getContext(ROUTER);
   const location = getContext(LOCATION);
