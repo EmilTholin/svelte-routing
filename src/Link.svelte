@@ -10,6 +10,8 @@
   export let getProps = () => ({});
   export let className;
 
+  $$props.class = className;
+
   const { base } = getContext(ROUTER);
   const location = getContext(LOCATION);
   const dispatch = createEventDispatcher();
@@ -27,6 +29,7 @@
     isCurrent,
     class: className ? className : ""
   });
+
   function onClick(event) {
     dispatch("click", event);
 
