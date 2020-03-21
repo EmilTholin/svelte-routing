@@ -12,6 +12,8 @@
   const { base } = getContext(ROUTER);
   const location = getContext(LOCATION);
   const dispatch = createEventDispatcher();
+  const className = $$props.class || "";
+  const activeClassName = $$props["active-class"] || "";
 
   let href, isPartiallyCurrent, isCurrent, props;
   $: href = to === "/" ? $base.uri : resolve(to, $base.uri);
@@ -38,6 +40,11 @@
   }
 </script>
 
-<a href="{href}" aria-current="{ariaCurrent}" on:click="{onClick}" {...props}>
-  <slot></slot>
+<a
+  {href}
+  aria-current={ariaCurrent}
+  on:click={onClick}
+  {...props}
+  class={`${className} ${isCurrent ? activeClassName : ''}`}>
+  <slot />
 </a>
