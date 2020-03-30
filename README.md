@@ -2,19 +2,18 @@
 
 # Svelte Routing
 
-A declarative Svelte routing library with SSR support.
+Декларативная библиотека маршрутизации Svelte с поддержкой SSR.
 
-## Getting started
+## Начало работы
 
-Look at the [example folder][example-folder-url] for an example project setup.
-
-## Install
+Посмотрите [example folder][example-folder-url] на для примера настройки проекта.
+## Установить
 
 ```bash
 npm install --save svelte-routing
 ```
 
-## Usage
+## Использование
 
 ```html
 <!-- App.svelte -->
@@ -74,39 +73,39 @@ createServer((req, res) => {
 
 #### `Router`
 
-The `Router` component supplies the `Link` and `Route` descendant components with routing information through context, so you need at least one `Router` at the top of your application. It assigns a score to all its `Route` descendants and picks the best match to render.
+Компонент `Router` поставляет `Link` и `Route` потомкам компонентов с маршрутизацией информации через контекст, так что вам нужно по крайней мере один `Router` в верхней части вашего приложения. Он присваивает счет всем своим потомкам `Route` и выбирает лучшее соответствие для рендеринга.
 
-`Router` components can also be nested to allow for seamless merging of many smaller apps.
+Компоненты `Router` также могут быть вложены, чтобы обеспечить бесшовное слияние многих небольших приложений.
 
-###### Properties
+###### Свойства
 
-|  Property  | Required | Default Value | Description                                                                                                                                                                                                                                                                                                 |
+ Свойство | Обязательное значение | Значение по умолчанию | Описание                                                                                                                                                                                                                                                                                               |
 | :--------: | :------: | :-----------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `basepath` |          |     `'/'`     | The `basepath` property will be added to all the `to` properties of `Link` descendants and to all `path` properties of `Route` descendants. This property can be ignored in most cases, but if you host your application on e.g. `https://example.com/my-site`, the `basepath` should be set to `/my-site`. |
-|   `url`    |          |     `''`      | The `url` property is used in SSR to force the current URL of the application and will be used by all `Link` and `Route` descendants. A falsy value will be ignored by the `Router`, so it's enough to declare `export let url = '';` for your topmost component and only give it a value in SSR.           |
+| `basepath` |          |     `'/'`     | Свойство `basepath`  будет добавлено ко всем свойствам `to`потомков `Link` и ко всем `path` свойствам потомков `Route`. Это свойство может быть проигнорировано в большинстве случаев, но если вы размещаете ваше приложение на например `https://example.com/my-site`, Свойство `basepath`  должен быть установлен `/my-site`. |
+|   `url`    |          |     `''`      | Свойство `url` SSR используется в SSR для проброска текущего URL приложения и будет использоваться всеми `Link` и `Route` потомками. Ложное значение будет проигнорировано `Router`, поэтому достаточно объявить `export let url = '';` для вашего самого верхнего компонента и дать ему значение только в SSR.                      |
 
-#### `Link`
+#### Ссылка \`Link`
 
-A component used to navigate around the application.
+Компонент, используемый для навигации по приложению.
 
-###### Properties
+###### Свойства 
 
-|  Property  | Required | Default Value | Description                                                                                                                                                                                                                                                                                                                                                                               |
+
+ Свойство | Обязательное значение | Значение по умолчанию | Описание                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | :--------: | :------: | :-----------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|    `to`    |   ✔ ️    |     `'#'`     | URL the component should link to.                                                                                                                                                                                                                                                                                                                                                         |
+|    `to`    |   ✔ ️    |     `'#'`     | URL-адрес, на который должен ссылаться компонент.                                                                                                                                                                                                                                                                                                                         |
 | `replace`  |          |    `false`    | When `true`, clicking the `Link` will replace the current entry in the history stack instead of adding a new one.                                                                                                                                                                                                                                                                         |
-|  `state`   |          |     `{}`      | An object that will be pushed to the history stack when the `Link` is clicked.                                                                                                                                                                                                                                                                                                            |
-| `getProps` |          | `() => ({})`  | A function that returns an object that will be spread on the underlying anchor element's attributes. The first argument given to the function is an object with the properties `location`, `href`, `isPartiallyCurrent`, `isCurrent`. Look at the [`NavLink` component in the example project setup][example-folder-navlink] to see how you can build your own link components with this. |
+|  `state`   |          |     `{}`      | Объект, который будет перемещен в стек истории при нажатии кнопки `Link`.                                                                                                                                                                                                                                                                                 |
+| `getProps` |          | `() => ({})`  | Функция, возвращающая объект, который будет распределен на атрибуты базового якорного элемента. Первый аргумент, переданный функции, - это объект со свойствами `location`, `href`, `isPartiallyCurrent`, `isCurrent`. Посмотрите на [`NavLink` component in the example project setup][example-folder-navlink] чтобы посмотреть, как с помощью этого можно построить свои собственные компоненты связи. |
+#### `Route` \ Маршрут
 
-#### `Route`
+Компонент, который сделает свой `component` собственностью или детей, когда его предок `Router` компонент решит, что это лучшее совпадение.
 
-A component that will render its `component` property or children when its ancestor `Router` component decides it is the best match.
+Все свойства, кроме `path` и `component`, предоставленные `Route`, будут переданы `component`.
 
-All properties other than `path` and `component` given to the `Route` will be passed to the rendered `component`.
+Потенциальные параметры пути будут передаваться отображаемому `component` в качестве свойств. Свойству `wildcardName` может быть присвоено имя с `*wildcardName` для передачи символа подстановки в качестве свойства `wildcardName`, а не в качестве свойства `*`.
 
-Potential path parameters will be passed to the rendered `component` as properties. A wildcard `*` can be given a name with `*wildcardName` to pass the wildcard string as the `wildcardName` property instead of as the `*` property.
-
-Potential path parameters are passed back to the parent using props, so they can be exposed to the slot template using `let:params`.
+Потенциальные параметры пути передаются обратно родителю с помощью реквизита, так что они могут быть выставлены в шаблон слота с использованием `let:params`.
 
 ```html
 <Route path="blog/:id" let:params>
@@ -114,18 +113,18 @@ Potential path parameters are passed back to the parent using props, so they can
 </Route>
 ```
 
-###### Properties
+###### Свойства
 
 |  Property   | Required | Default Value | Description                                                                                                                                                              |
 | :---------: | :------: | :------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|   `path`    |          | `''`          | The path for when this component should be rendered. If no `path` is given the `Route` will act as the default that matches if no other `Route` in the `Router` matches. |
-| `component` |          | `null`        | The component constructor that will be used for rendering when the `Route` matches. If `component` is not set, the children of `Route` will be rendered instead.         |
+|   `path`    |          | `''`          | Путь к тому, когда этот компонент должен быть визуализирован. Если `path` не указан, то `Route` будет действовать по умолчанию, если ни один другой `Route` в `Router` не будет совпадать. |
+| `component` |          | `null`        | Конструктор компонентов, который будет использоваться для рендеринга при совпадении `Route`. Если `component` не задан, вместо него будут отрисовываться дочерние элементы `Route`.         |
 
 #### `navigate`
 
-A function that allows you to imperatively navigate around the application for those use cases where a `Link` component is not suitable, e.g. after submitting a form.
+Функция, позволяющая в обязательном порядке перемещаться по приложению для тех случаев использования, когда компонент `Link` не подходит, например, после отправки формы.
 
-The first argument is a string denoting where to navigate to, and the second argument is an object with a `replace` and `state` property equivalent to those in the `Link` component.
+Первый аргумент - это строка, обозначающая, куда нужно перейти, а второй - объект со свойствами `replace` и `state`, эквивалентными свойствам в компоненте `Link`.
 
 ```html
 <script>
@@ -141,7 +140,7 @@ The first argument is a string denoting where to navigate to, and the second arg
 
 #### `link`
 
-An action used on anchor tags to navigate around the application. You can add an attribute `replace` to replace the current entry in the history stack instead of adding a new one.
+Действие, используемое на якорных метках для навигации по приложению. Вы можете добавить атрибут `replace` для замены текущей записи в стеке истории вместо добавления новой.
 
 ```html
 <script>
@@ -157,7 +156,7 @@ An action used on anchor tags to navigate around the application. You can add an
 
 #### `links`
 
-An action used on a root element to make all relative anchor elements navigate around the application. You can add an attribute `replace` on any anchor to replace the current entry in the history stack instead of adding a new one. You can add an attribute `noroute` for this action to skip over the anchor and allow it to use the native browser action.
+Действие, используемое на корневом элементе для того, чтобы заставить все относительные якорные элементы перемещаться вокруг приложения. Вы можете добавить атрибут `replace` на любой якорь, чтобы заменить текущую запись в стеке истории вместо добавления новой. Вы можете добавить атрибут `норут` для этого действия, чтобы пропустить якорь и позволить ему использовать родное действие браузера.
 
 ```html
 <!-- App.svelte -->
@@ -175,12 +174,13 @@ An action used on a root element to make all relative anchor elements navigate a
 </div>
 ```
 
-## SSR Caveat
+## SSR но есть один нюанс
 
-In the browser we wait until all child `Route` components have registered with their ancestor `Router` component before we let the `Router` pick the best match. This approach is not possible on the server, because when all `Route` components have registered and it is time to pick a match the SSR has already completed, and a document with no matching route will be returned.
+В браузере мы ждем, пока все дочерние компоненты `Route` не зарегистрируются со своим предком компонентом `Router`, прежде чем мы позволим `Router` выбрать лучшее совпадение. Такой подход невозможен на сервере, потому что когда все компоненты `Route` зарегистрированы и настало время выбрать совпадение, SSR уже завершено, и документ без совпадения маршрута будет возвращен.
 
-We therefore resort to picking the first matching `Route` that is registered on the server, so it is of utmost importance that you `sort your Route components from the most specific to the least specific if you are using SSR`.
+Поэтому мы прибегаем к выбору первого совпадения `Route`, которое зарегистрировано на сервере, поэтому крайне важно, чтобы вы `сортировка компонентов  Route от наиболее специфических до наименее специфических, если вы используете SSR `.
 
+## Оригинал на английском
 [npm]: https://img.shields.io/npm/v/svelte-routing.svg
 [npm-url]: https://npmjs.com/package/svelte-routing
 [example-folder-url]: https://github.com/EmilTholin/svelte-routing/tree/master/example
