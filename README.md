@@ -98,6 +98,14 @@ A component used to navigate around the application.
 |  `state`   |          |     `{}`      | An object that will be pushed to the history stack when the `Link` is clicked.                                                                                                                                                                                                                                                                                                            |
 | `getProps` |          | `() => ({})`  | A function that returns an object that will be spread on the underlying anchor element's attributes. The first argument given to the function is an object with the properties `location`, `href`, `isPartiallyCurrent`, `isCurrent`. Look at the [`NavLink` component in the example project setup][example-folder-navlink] to see how you can build your own link components with this. |
 
+The active status of link can be exposed to the slot template using `let:active`.
+
+```html
+<Link to="/browser" let:active>
+  <MenuItem active={active}>Browser</MenuItem>
+</Link>
+```
+
 #### `Route`
 
 A component that will render its `component` property or children when its ancestor `Router` component decides it is the best match.
