@@ -39,5 +39,5 @@
 </script>
 
 <a href="{href}" aria-current="{ariaCurrent}" on:click="{onClick}" {...props}>
-  <slot></slot>
+  <slot active="{!!ariaCurrent}"></slot>
 </a>
