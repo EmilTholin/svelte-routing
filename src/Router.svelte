@@ -29,7 +29,7 @@
     ? routerContext.routerBase
     : writable({
         path: basepath,
-        uri: basepath
+        uri: basepath,
       });
 
   const routerBase = derived([base, activeRoute], ([base, activeRoute]) => {
@@ -71,7 +71,7 @@
         hasActiveRoute = true;
       }
     } else {
-      routes.update(rs => {
+      routes.update((rs) => {
         rs.push(route);
         return rs;
       });
@@ -79,7 +79,7 @@
   }
 
   function unregisterRoute(route) {
-    routes.update(rs => {
+    routes.update((rs) => {
       const index = rs.indexOf(route);
       rs.splice(index, 1);
       return rs;
@@ -90,8 +90,8 @@
   // the basepath changes.
   $: {
     const { path: basepath } = $base;
-    routes.update(rs => {
-      rs.forEach(r => (r.path = combinePaths(basepath, r._path)));
+    routes.update((rs) => {
+      rs.forEach((r) => (r.path = combinePaths(basepath, r._path)));
       return rs;
     });
   }
@@ -108,7 +108,7 @@
     // The topmost Router in the tree is responsible for updating
     // the location store and supplying it through context.
     onMount(() => {
-      const unlisten = globalHistory.listen(history => {
+      const unlisten = globalHistory.listen((history) => {
         location.set(history.location);
       });
 
@@ -120,11 +120,12 @@
 
   setContext(ROUTER, {
     activeRoute,
+    routes,
     base,
     routerBase,
     registerRoute,
-    unregisterRoute
+    unregisterRoute,
   });
 </script>
 
-<slot></slot>
+<slot />
