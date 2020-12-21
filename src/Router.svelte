@@ -3,7 +3,7 @@
   import { writable, derived } from "svelte/store";
   import { LOCATION, ROUTER } from "./contexts.js";
   import { globalHistory } from "./history.js";
-  import { pick, match, stripSlashes, combinePaths } from "./utils.js";
+  import { pick, match, combinePaths } from "./utils.js";
 
   export let basepath = "/";
   export let url = null;
