@@ -1,229 +1,300 @@
 'use strict';
 
-function noop() {}
-
+function noop() { }
 function run(fn) {
-	return fn();
+    return fn();
 }
-
 function blank_object() {
-	return Object.create(null);
+    return Object.create(null);
 }
-
 function run_all(fns) {
-	fns.forEach(run);
+    fns.forEach(run);
 }
-
+function is_function(thing) {
+    return typeof thing === 'function';
+}
 function safe_not_equal(a, b) {
-	return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+    return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+}
+function subscribe(store, ...callbacks) {
+    if (store == null) {
+        return noop;
+    }
+    const unsub = store.subscribe(...callbacks);
+    return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
+}
+function get_store_value(store) {
+    let value;
+    subscribe(store, _ => value = _)();
+    return value;
+}
+function compute_rest_props(props, keys) {
+    const rest = {};
+    keys = new Set(keys);
+    for (const k in props)
+        if (!keys.has(k) && k[0] !== '$')
+            rest[k] = props[k];
+    return rest;
+}
+function custom_event(type, detail) {
+    const e = document.createEvent('CustomEvent');
+    e.initCustomEvent(type, false, false, detail);
+    return e;
 }
 
 let current_component;
-
 function set_current_component(component) {
-	current_component = component;
+    current_component = component;
 }
-
 function get_current_component() {
-	if (!current_component) throw new Error(`Function called outside component initialization`);
-	return current_component;
+    if (!current_component)
+        throw new Error('Function called outside component initialization');
+    return current_component;
 }
-
 function onMount(fn) {
-	get_current_component().$$.on_mount.push(fn);
+    get_current_component().$$.on_mount.push(fn);
 }
-
 function onDestroy(fn) {
-	get_current_component().$$.on_destroy.push(fn);
+    get_current_component().$$.on_destroy.push(fn);
 }
-
+function createEventDispatcher() {
+    const component = get_current_component();
+    return (type, detail) => {
+        const callbacks = component.$$.callbacks[type];
+        if (callbacks) {
+            // TODO are there situations where events could be dispatched
+            // in a server (non-DOM) environment?
+            const event = custom_event(type, detail);
+            callbacks.slice().forEach(fn => {
+                fn.call(component, event);
+            });
+        }
+    };
+}
 function setContext(key, context) {
-	get_current_component().$$.context.set(key, context);
+    get_current_component().$$.context.set(key, context);
+}
+function getContext(key) {
+    return get_current_component().$$.context.get(key);
 }
 
-function getContext(key) {
-	return get_current_component().$$.context.get(key);
-}
+// source: https://html.spec.whatwg.org/multipage/indices.html
+const boolean_attributes = new Set([
+    'allowfullscreen',
+    'allowpaymentrequest',
+    'async',
+    'autofocus',
+    'autoplay',
+    'checked',
+    'controls',
+    'default',
+    'defer',
+    'disabled',
+    'formnovalidate',
+    'hidden',
+    'ismap',
+    'loop',
+    'multiple',
+    'muted',
+    'nomodule',
+    'novalidate',
+    'open',
+    'playsinline',
+    'readonly',
+    'required',
+    'reversed',
+    'selected'
+]);
 
 const invalid_attribute_name_character = /[\s'">/=\u{FDD0}-\u{FDEF}\u{FFFE}\u{FFFF}\u{1FFFE}\u{1FFFF}\u{2FFFE}\u{2FFFF}\u{3FFFE}\u{3FFFF}\u{4FFFE}\u{4FFFF}\u{5FFFE}\u{5FFFF}\u{6FFFE}\u{6FFFF}\u{7FFFE}\u{7FFFF}\u{8FFFE}\u{8FFFF}\u{9FFFE}\u{9FFFF}\u{AFFFE}\u{AFFFF}\u{BFFFE}\u{BFFFF}\u{CFFFE}\u{CFFFF}\u{DFFFE}\u{DFFFF}\u{EFFFE}\u{EFFFF}\u{FFFFE}\u{FFFFF}\u{10FFFE}\u{10FFFF}]/u;
 // https://html.spec.whatwg.org/multipage/syntax.html#attributes-2
 // https://infra.spec.whatwg.org/#noncharacter
-
-function spread(args) {
-	const attributes = Object.assign({}, ...args);
-	let str = '';
-
-	Object.keys(attributes).forEach(name => {
-		if (invalid_attribute_name_character.test(name)) return;
-
-		const value = attributes[name];
-		if (value === undefined) return;
-		if (value === true) str += " " + name;
-
-		const escaped = String(value)
-			.replace(/"/g, '&#34;')
-			.replace(/'/g, '&#39;');
-
-		str += " " + name + "=" + JSON.stringify(escaped);
-	});
-
-	return str;
+function spread(args, classes_to_add) {
+    const attributes = Object.assign({}, ...args);
+    if (classes_to_add) {
+        if (attributes.class == null) {
+            attributes.class = classes_to_add;
+        }
+        else {
+            attributes.class += ' ' + classes_to_add;
+        }
+    }
+    let str = '';
+    Object.keys(attributes).forEach(name => {
+        if (invalid_attribute_name_character.test(name))
+            return;
+        const value = attributes[name];
+        if (value === true)
+            str += ' ' + name;
+        else if (boolean_attributes.has(name.toLowerCase())) {
+            if (value)
+                str += ' ' + name;
+        }
+        else if (value != null) {
+            str += ` ${name}="${String(value).replace(/"/g, '&#34;').replace(/'/g, '&#39;')}"`;
+        }
+    });
+    return str;
 }
-
 const escaped = {
-	'"': '&quot;',
-	"'": '&#39;',
-	'&': '&amp;',
-	'<': '&lt;',
-	'>': '&gt;'
+    '"': '&quot;',
+    "'": '&#39;',
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;'
 };
-
 function escape(html) {
-	return String(html).replace(/["'&<>]/g, match => escaped[match]);
+    return String(html).replace(/["'&<>]/g, match => escaped[match]);
 }
-
 const missing_component = {
-	$$render: () => ''
+    $$render: () => ''
 };
-
 function validate_component(component, name) {
-	if (!component || !component.$$render) {
-		if (name === 'svelte:component') name += ' this={...}';
-		throw new Error(`<${name}> is not a valid SSR component. You may need to review your build config to ensure that dependencies are compiled, rather than imported as pre-compiled modules`);
-	}
-
-	return component;
+    if (!component || !component.$$render) {
+        if (name === 'svelte:component')
+            name += ' this={...}';
+        throw new Error(`<${name}> is not a valid SSR component. You may need to review your build config to ensure that dependencies are compiled, rather than imported as pre-compiled modules`);
+    }
+    return component;
 }
-
 let on_destroy;
-
 function create_ssr_component(fn) {
-	function $$render(result, props, bindings, slots) {
-		const parent_component = current_component;
-
-		const $$ = {
-			on_destroy,
-			context: new Map(parent_component ? parent_component.$$.context : []),
-
-			// these will be immediately discarded
-			on_mount: [],
-			before_render: [],
-			after_render: [],
-			callbacks: blank_object()
-		};
-
-		set_current_component({ $$ });
-
-		const html = fn(result, props, bindings, slots);
-
-		set_current_component(parent_component);
-		return html;
-	}
-
-	return {
-		render: (props = {}, options = {}) => {
-			on_destroy = [];
-
-			const result = { head: '', css: new Set() };
-			const html = $$render(result, props, {}, options);
-
-			run_all(on_destroy);
-
-			return {
-				html,
-				css: {
-					code: Array.from(result.css).map(css => css.code).join('\n'),
-					map: null // TODO
-				},
-				head: result.head
-			};
-		},
-
-		$$render
-	};
+    function $$render(result, props, bindings, slots) {
+        const parent_component = current_component;
+        const $$ = {
+            on_destroy,
+            context: new Map(parent_component ? parent_component.$$.context : []),
+            // these will be immediately discarded
+            on_mount: [],
+            before_update: [],
+            after_update: [],
+            callbacks: blank_object()
+        };
+        set_current_component({ $$ });
+        const html = fn(result, props, bindings, slots);
+        set_current_component(parent_component);
+        return html;
+    }
+    return {
+        render: (props = {}, options = {}) => {
+            on_destroy = [];
+            const result = { title: '', head: '', css: new Set() };
+            const html = $$render(result, props, {}, options);
+            run_all(on_destroy);
+            return {
+                html,
+                css: {
+                    code: Array.from(result.css).map(css => css.code).join('\n'),
+                    map: null // TODO
+                },
+                head: result.title + result.head
+            };
+        },
+        $$render
+    };
 }
 
-function get_store_value(store) {
-	let value;
-	store.subscribe(_ => value = _)();
-	return value;
-}
-
+const subscriber_queue = [];
+/**
+ * Creates a `Readable` store that allows reading by subscription.
+ * @param value initial value
+ * @param {StartStopNotifier}start start and stop notifications for subscriptions
+ */
 function readable(value, start) {
-	return {
-		subscribe: writable(value, start).subscribe
-	};
+    return {
+        subscribe: writable(value, start).subscribe
+    };
 }
-
+/**
+ * Create a `Writable` store that allows both updating and reading by subscription.
+ * @param {*=}value initial value
+ * @param {StartStopNotifier=}start start and stop notifications for subscriptions
+ */
 function writable(value, start = noop) {
-	let stop;
-	const subscribers = [];
-
-	function set(new_value) {
-		if (safe_not_equal(value, new_value)) {
-			value = new_value;
-			if (!stop) return; // not ready
-			subscribers.forEach(s => s[1]());
-			subscribers.forEach(s => s[0](value));
-		}
-	}
-
-	function update(fn) {
-		set(fn(value));
-	}
-
-	function subscribe(run, invalidate = noop) {
-		const subscriber = [run, invalidate];
-		subscribers.push(subscriber);
-		if (subscribers.length === 1) stop = start(set) || noop;
-		run(value);
-
-		return () => {
-			const index = subscribers.indexOf(subscriber);
-			if (index !== -1) subscribers.splice(index, 1);
-			if (subscribers.length === 0) stop();
-		};
-	}
-
-	return { set, update, subscribe };
+    let stop;
+    const subscribers = [];
+    function set(new_value) {
+        if (safe_not_equal(value, new_value)) {
+            value = new_value;
+            if (stop) { // store is ready
+                const run_queue = !subscriber_queue.length;
+                for (let i = 0; i < subscribers.length; i += 1) {
+                    const s = subscribers[i];
+                    s[1]();
+                    subscriber_queue.push(s, value);
+                }
+                if (run_queue) {
+                    for (let i = 0; i < subscriber_queue.length; i += 2) {
+                        subscriber_queue[i][0](subscriber_queue[i + 1]);
+                    }
+                    subscriber_queue.length = 0;
+                }
+            }
+        }
+    }
+    function update(fn) {
+        set(fn(value));
+    }
+    function subscribe(run, invalidate = noop) {
+        const subscriber = [run, invalidate];
+        subscribers.push(subscriber);
+        if (subscribers.length === 1) {
+            stop = start(set) || noop;
+        }
+        run(value);
+        return () => {
+            const index = subscribers.indexOf(subscriber);
+            if (index !== -1) {
+                subscribers.splice(index, 1);
+            }
+            if (subscribers.length === 0) {
+                stop();
+                stop = null;
+            }
+        };
+    }
+    return { set, update, subscribe };
 }
-
 function derived(stores, fn, initial_value) {
-	const single = !Array.isArray(stores);
-	if (single) stores = [stores];
-
-	const auto = fn.length < 2;
-
-	return readable(initial_value, set => {
-		let inited = false;
-		const values = [];
-
-		let pending = 0;
-
-		const sync = () => {
-			if (pending) return;
-			const result = fn(single ? values[0] : values, set);
-			if (auto) set(result);
-		};
-
-		const unsubscribers = stores.map((store, i) => store.subscribe(
-			value => {
-				values[i] = value;
-				pending &= ~(1 << i);
-				if (inited) sync();
-			},
-			() => {
-				pending |= (1 << i);
-			})
-		);
-
-		inited = true;
-		sync();
-
-		return function stop() {
-			run_all(unsubscribers);
-		};
-	});
+    const single = !Array.isArray(stores);
+    const stores_array = single
+        ? [stores]
+        : stores;
+    const auto = fn.length < 2;
+    return readable(initial_value, (set) => {
+        let inited = false;
+        const values = [];
+        let pending = 0;
+        let cleanup = noop;
+        const sync = () => {
+            if (pending) {
+                return;
+            }
+            cleanup();
+            const result = fn(single ? values[0] : values, set);
+            if (auto) {
+                set(result);
+            }
+            else {
+                cleanup = is_function(result) ? result : noop;
+            }
+        };
+        const unsubscribers = stores_array.map((store, i) => subscribe(store, (value) => {
+            values[i] = value;
+            pending &= ~(1 << i);
+            if (inited) {
+                sync();
+            }
+        }, () => {
+            pending |= (1 << i);
+        }));
+        inited = true;
+        sync();
+        return function stop() {
+            run_all(unsubscribers);
+            cleanup();
+        };
+    });
 }
 
 const LOCATION = {};
@@ -367,6 +438,7 @@ function startsWith(string, search) {
 function isRootSegment(segment) {
   return segment === "";
 }
+
 /**
  * Check if `segment` is a dynamic segment
  * @param {string} segment
@@ -375,13 +447,14 @@ function isRootSegment(segment) {
 function isDynamic(segment) {
   return paramRe.test(segment);
 }
+
 /**
  * Check if `segment` is a splat
  * @param {string} segment
  * @return {boolean}
  */
 function isSplat(segment) {
-  return segment === "*";
+  return segment[0] === "*";
 }
 
 /**
@@ -504,12 +577,13 @@ function pick(routes, uri) {
       const routeSegment = routeSegments[index];
       const uriSegment = uriSegments[index];
 
-      let isSplat = routeSegment === "*";
-      if (isSplat) {
+      if (routeSegment !== undefined && isSplat(routeSegment)) {
         // Hit a splat, just grab the rest, and return a match
         // uri:   /files/documents/work
-        // route: /files/*
-        params["*"] = uriSegments
+        // route: /files/* or /files/*splatname
+        const splatName = routeSegment === "*" ? "*" : routeSegment.slice(1);
+
+        params[splatName] = uriSegments
           .slice(index)
           .map(decodeURIComponent)
           .join("/");
@@ -649,346 +723,349 @@ function resolve(to, base) {
 function combinePaths(basepath, path) {
   return `${stripSlashes(
     path === "/" ? basepath : `${stripSlashes(basepath)}/${stripSlashes(path)}`
-  )}/*`;
+  )}/`;
 }
 
-/* node_modules/svelte-routing/src/Router.svelte generated by Svelte v3.2.2 */
+/* node_modules/svelte-routing/src/Router.svelte generated by Svelte v3.31.0 */
 
-const Router = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
-	let $base, $location, $routes;
+const Router = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+	let $base;
+	let $location;
+	let $routes;
+	let { basepath = "/" } = $$props;
+	let { url = null } = $$props;
+	const locationContext = getContext(LOCATION);
+	const routerContext = getContext(ROUTER);
+	const routes = writable([]);
+	$routes = get_store_value(routes);
+	const activeRoute = writable(null);
+	let hasActiveRoute = false; // Used in SSR to synchronously set that a Route is active.
 
-	
+	// If locationContext is not set, this is the topmost Router in the tree.
+	// If the `url` prop is given we force the location to it.
+	const location = locationContext || writable(url ? { pathname: url } : globalHistory.location);
 
-  let { basepath = "/", url = null } = $$props;
+	$location = get_store_value(location);
 
-  const locationContext = getContext(LOCATION);
-  const routerContext = getContext(ROUTER);
+	// If routerContext is set, the routerBase of the parent Router
+	// will be the base for this Router's descendants.
+	// If routerContext is not set, the path and resolved uri will both
+	// have the value of the basepath prop.
+	const base = routerContext
+	? routerContext.routerBase
+	: writable({ path: basepath, uri: basepath });
 
-  const routes = writable([]); $routes = get_store_value(routes);
-  const activeRoute = writable(null);
-  let hasActiveRoute = false; // Used in SSR to synchronously set that a Route is active.
+	$base = get_store_value(base);
 
-  // If locationContext is not set, this is the topmost Router in the tree.
-  // If the `url` prop is given we force the location to it.
-  const location =
-    locationContext ||
-    writable(url ? { pathname: url } : globalHistory.location); $location = get_store_value(location);
+	const routerBase = derived([base, activeRoute], ([base, activeRoute]) => {
+		// If there is no activeRoute, the routerBase will be identical to the base.
+		if (activeRoute === null) {
+			return base;
+		}
 
-  // If routerContext is set, the routerBase of the parent Router
-  // will be the base for this Router's descendants.
-  // If routerContext is not set, the path and resolved uri will both
-  // have the value of the basepath prop.
-  const base = routerContext
-    ? routerContext.routerBase
-    : writable({
-        path: basepath,
-        uri: basepath
-      }); $base = get_store_value(base);
+		const { path: basepath } = base;
+		const { route, uri } = activeRoute;
 
-  const routerBase = derived([base, activeRoute], ([base, activeRoute]) => {
-    // If there is no activeRoute, the routerBase will be identical to the base.
-    if (activeRoute === null) {
-      return base;
-    }
+		// Remove the potential /* or /*splatname from
+		// the end of the child Routes relative paths.
+		const path = route.default
+		? basepath
+		: route.path.replace(/\*.*$/, "");
 
-    const { path: basepath } = base;
-    const { route, uri } = activeRoute;
-    // Remove the /* from the end for child Routes relative paths.
-    const path = route.default ? basepath : route.path.replace(/\*$/, "");
+		return { path, uri };
+	});
 
-    return { path, uri };
-  });
+	function registerRoute(route) {
+		const { path: basepath } = $base;
+		let { path } = route;
 
-  function registerRoute(route) {
-    const { path: basepath } = $base;
-    let { path } = route;
+		// We store the original path in the _path property so we can reuse
+		// it when the basepath changes. The only thing that matters is that
+		// the route reference is intact, so mutation is fine.
+		route._path = path;
 
-    // We store the original path in the _path property so we can reuse
-    // it when the basepath changes. The only thing that matters is that
-    // the route reference is intact, so mutation is fine.
-    route._path = path;
-    route.path = combinePaths(basepath, path);
+		route.path = combinePaths(basepath, path);
 
-    if (typeof window === "undefined") {
-      // In SSR we should set the activeRoute immediately if it is a match.
-      // If there are more Routes being registered after a match is found,
-      // we just skip them.
-      if (hasActiveRoute) {
-        return;
-      }
+		if (typeof window === "undefined") {
+			// In SSR we should set the activeRoute immediately if it is a match.
+			// If there are more Routes being registered after a match is found,
+			// we just skip them.
+			if (hasActiveRoute) {
+				return;
+			}
 
-      const matchingRoute = match(route, $location.pathname);
-      if (matchingRoute) {
-        activeRoute.set(matchingRoute);
-        hasActiveRoute = true;
-      }
-    } else {
-      routes.update(rs => {
-        rs.push(route);
-        return rs;
-      });
-    }
-  }
+			const matchingRoute = match(route, $location.pathname);
 
-  function unregisterRoute(route) {
-    routes.update(rs => {
-      const index = rs.indexOf(route);
-      rs.splice(index, 1);
-      return rs;
-    });
-  }
+			if (matchingRoute) {
+				activeRoute.set(matchingRoute);
+				hasActiveRoute = true;
+			}
+		} else {
+			routes.update(rs => {
+				rs.push(route);
+				return rs;
+			});
+		}
+	}
 
-  if (!locationContext) {
-    // The topmost Router in the tree is responsible for updating
-    // the location store and supplying it through context.
-    onMount(() => {
-      const unlisten = globalHistory.listen(history => {
-        location.set(history.location);
-      });
+	function unregisterRoute(route) {
+		routes.update(rs => {
+			const index = rs.indexOf(route);
+			rs.splice(index, 1);
+			return rs;
+		});
+	}
 
-      return unlisten;
-    });
+	if (!locationContext) {
+		// The topmost Router in the tree is responsible for updating
+		// the location store and supplying it through context.
+		onMount(() => {
+			const unlisten = globalHistory.listen(history => {
+				location.set(history.location);
+			});
 
-    setContext(LOCATION, location);
-  }
+			return unlisten;
+		});
 
-  setContext(ROUTER, {
-    activeRoute,
-    base,
-    routerBase,
-    registerRoute,
-    unregisterRoute
-  });
+		setContext(LOCATION, location);
+	}
+
+	setContext(ROUTER, {
+		activeRoute,
+		base,
+		routerBase,
+		registerRoute,
+		unregisterRoute
+	});
 
 	if ($$props.basepath === void 0 && $$bindings.basepath && basepath !== void 0) $$bindings.basepath(basepath);
 	if ($$props.url === void 0 && $$bindings.url && url !== void 0) $$bindings.url(url);
-
 	$base = get_store_value(base);
 	$location = get_store_value(location);
 	$routes = get_store_value(routes);
 
-	{
-        const { path: basepath } = $base;
-        routes.update(rs => {
-          rs.forEach(r => (r.path = combinePaths(basepath, r._path)));
-          return rs;
-        });
-      }
-	{
-        const bestMatch = pick($routes, $location.pathname);
-        activeRoute.set(bestMatch);
-      }
+	 {
+		{
+			const { path: basepath } = $base;
 
-	return `${$$slots.default ? $$slots.default() : ``}`;
+			routes.update(rs => {
+				rs.forEach(r => r.path = combinePaths(basepath, r._path));
+				return rs;
+			});
+		}
+	}
+
+	 {
+		{
+			const bestMatch = pick($routes, $location.pathname);
+			activeRoute.set(bestMatch);
+		}
+	}
+
+	return `${slots.default ? slots.default({}) : ``}`;
 });
 
-/* node_modules/svelte-routing/src/Route.svelte generated by Svelte v3.2.2 */
+/* node_modules/svelte-routing/src/Route.svelte generated by Svelte v3.31.0 */
 
-const Route = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
+const Route = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 	let $activeRoute;
+	let $location;
+	let { path = "" } = $$props;
+	let { component = null } = $$props;
+	const { registerRoute, unregisterRoute, activeRoute } = getContext(ROUTER);
+	$activeRoute = get_store_value(activeRoute);
+	const location = getContext(LOCATION);
+	$location = get_store_value(location);
 
-	
+	const route = {
+		path,
+		// If no path prop is given, this Route will act as the default Route
+		// that is rendered if no other Route in the Router is a match.
+		default: path === ""
+	};
 
-  let { path = "", component = null } = $$props;
+	let routeParams = {};
+	let routeProps = {};
+	registerRoute(route);
 
-  const { registerRoute, unregisterRoute, activeRoute } = getContext(ROUTER); $activeRoute = get_store_value(activeRoute);
-
-  const route = {
-    path,
-    // If no path prop is given, this Route will act as the default Route
-    // that is rendered if no other Route in the Router is a match.
-    default: path === ""
-  };
-  let routeParams = {};
-
-  registerRoute(route);
-
-  // There is no need to unregister Routes in SSR since it will all be
-  // thrown away anyway.
-  if (typeof window !== "undefined") {
-    onDestroy(() => {
-      unregisterRoute(route);
-    });
-  }
+	// There is no need to unregister Routes in SSR since it will all be
+	// thrown away anyway.
+	if (typeof window !== "undefined") {
+		onDestroy(() => {
+			unregisterRoute(route);
+		});
+	}
 
 	if ($$props.path === void 0 && $$bindings.path && path !== void 0) $$bindings.path(path);
 	if ($$props.component === void 0 && $$bindings.component && component !== void 0) $$bindings.component(component);
-
 	$activeRoute = get_store_value(activeRoute);
+	$location = get_store_value(location);
 
-	if ($activeRoute && $activeRoute.route === route) {
-        const { params } = $activeRoute;
-        routeParams = Object.keys(params).reduce((acc, param) => {
-          if (param !== "*") {
-            acc[param] = params[param];
-          }
-          return acc;
-        }, {});
-      }
+	 {
+		if ($activeRoute && $activeRoute.route === route) {
+			routeParams = $activeRoute.params;
+		}
+	}
 
-	return `${ $activeRoute !== null && $activeRoute.route === route ? `${ component !== null ? `${validate_component(((component) || missing_component), 'svelte:component').$$render($$result, Object.assign(routeParams), {}, {})}` : `${$$slots.default ? $$slots.default() : ``}` }` : `` }`;
+	 {
+		{
+			const { path, component, ...rest } = $$props;
+			routeProps = rest;
+		}
+	}
+
+	return `${$activeRoute !== null && $activeRoute.route === route
+	? `${component !== null
+		? `${validate_component(component || missing_component, "svelte:component").$$render($$result, Object.assign({ location: $location }, routeParams, routeProps), {}, {})}`
+		: `${slots.default
+			? slots.default({ params: routeParams, location: $location })
+			: ``}`}`
+	: ``}`;
 });
 
-/* node_modules/svelte-routing/src/Link.svelte generated by Svelte v3.2.2 */
+/* node_modules/svelte-routing/src/Link.svelte generated by Svelte v3.31.0 */
 
-const Link = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
-	let $base, $location;
-
-	
-
-  let { to = "#", replace = false, state = {}, getProps = () => ({}) } = $$props;
-
-  const { base } = getContext(ROUTER); $base = get_store_value(base);
-  const location = getContext(LOCATION); $location = get_store_value(location);
-
-  let href, isPartiallyCurrent, isCurrent, props;
+const Link = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+	let $$restProps = compute_rest_props($$props, ["to","replace","state","getProps"]);
+	let $base;
+	let $location;
+	let { to = "#" } = $$props;
+	let { replace = false } = $$props;
+	let { state = {} } = $$props;
+	let { getProps = () => ({}) } = $$props;
+	const { base } = getContext(ROUTER);
+	$base = get_store_value(base);
+	const location = getContext(LOCATION);
+	$location = get_store_value(location);
+	const dispatch = createEventDispatcher();
+	let href, isPartiallyCurrent, isCurrent, props;
 
 	if ($$props.to === void 0 && $$bindings.to && to !== void 0) $$bindings.to(to);
 	if ($$props.replace === void 0 && $$bindings.replace && replace !== void 0) $$bindings.replace(replace);
 	if ($$props.state === void 0 && $$bindings.state && state !== void 0) $$bindings.state(state);
 	if ($$props.getProps === void 0 && $$bindings.getProps && getProps !== void 0) $$bindings.getProps(getProps);
-
 	$base = get_store_value(base);
 	$location = get_store_value(location);
-
+	let ariaCurrent;
 	href = to === "/" ? $base.uri : resolve(to, $base.uri);
 	isPartiallyCurrent = startsWith($location.pathname, href);
 	isCurrent = href === $location.pathname;
-	let ariaCurrent = isCurrent ? "page" : undefined;
-	props = getProps({
-        location: $location,
-        href,
-        isPartiallyCurrent,
-        isCurrent
-      });
+	ariaCurrent = isCurrent ? "page" : undefined;
 
-	return `<a${spread([{ href: `${escape(href)}` }, { "aria-current": `${escape(ariaCurrent)}` }, props])}>
-	  ${$$slots.default ? $$slots.default() : ``}
-	</a>`;
+	props = getProps({
+		location: $location,
+		href,
+		isPartiallyCurrent,
+		isCurrent
+	});
+
+	return `<a${spread([
+		{ href: escape(href) },
+		{ "aria-current": escape(ariaCurrent) },
+		props,
+		$$restProps
+	])}>${slots.default ? slots.default({}) : ``}</a>`;
 });
 
-/* src/components/NavLink.svelte generated by Svelte v3.2.2 */
+/* src/components/NavLink.svelte generated by Svelte v3.31.0 */
 
 function getProps({ location, href, isPartiallyCurrent, isCurrent }) {
-  const isActive = href === "/" ? isCurrent : isPartiallyCurrent || isCurrent;
+	const isActive = href === "/"
+	? isCurrent
+	: isPartiallyCurrent || isCurrent;
 
-  // The object returned here is spread on the anchor element's attributes
-  if (isActive) {
-    return { class: "active" };
-  }
-  return {};
+	// The object returned here is spread on the anchor element's attributes
+	if (isActive) {
+		return { class: "active" };
+	}
+
+	return {};
 }
 
-const NavLink = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
+const NavLink = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 	let { to = "" } = $$props;
-
 	if ($$props.to === void 0 && $$bindings.to && to !== void 0) $$bindings.to(to);
 
-	return `${validate_component(Link, 'Link').$$render($$result, { to: to, getProps: getProps }, {}, {
-		default: () => `
-	  ${$$slots.default ? $$slots.default() : ``}
-	`
+	return `${validate_component(Link, "Link").$$render($$result, { to, getProps }, {}, {
+		default: () => `${slots.default ? slots.default({}) : ``}`
 	})}`;
 });
 
-/* src/routes/Home.svelte generated by Svelte v3.2.2 */
+/* src/routes/Home.svelte generated by Svelte v3.31.0 */
 
-const Home = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
+const Home = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 	return `<h1>Home</h1>
-	<p>Welcome to my website</p>`;
+<p>Welcome to my website</p>`;
 });
 
-/* src/routes/About.svelte generated by Svelte v3.2.2 */
+/* src/routes/About.svelte generated by Svelte v3.31.0 */
 
-const About = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
+const About = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 	return `<h1>About</h1>
-	<p>I like to code</p>`;
+<p>I like to code</p>`;
 });
 
-/* src/routes/Blog.svelte generated by Svelte v3.2.2 */
+/* src/routes/Blog.svelte generated by Svelte v3.31.0 */
 
-const Blog = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
-	return `${validate_component(Router, 'Router').$$render($$result, {}, {}, {
-		default: () => `
-	  <h1>Blog</h1>
+const Blog = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+	return `${validate_component(Router, "Router").$$render($$result, {}, {}, {
+		default: () => `<h1>Blog</h1>
 
-	  <ul>
-	    <li>${validate_component(Link, 'Link').$$render($$result, { to: "first" }, {}, {
-		default: () => `Today I did something cool`
-	})}</li>
-	    <li>${validate_component(Link, 'Link').$$render($$result, { to: "second" }, {}, {
-		default: () => `I did something awesome today`
-	})}</li>
-	    <li>${validate_component(Link, 'Link').$$render($$result, { to: "third" }, {}, {
-		default: () => `Did something sweet today`
-	})}</li>
-	  </ul>
+  <ul><li>${validate_component(Link, "Link").$$render($$result, { to: "first" }, {}, {
+			default: () => `Today I did something cool`
+		})}</li>
+    <li>${validate_component(Link, "Link").$$render($$result, { to: "second" }, {}, {
+			default: () => `I did something awesome today`
+		})}</li>
+    <li>${validate_component(Link, "Link").$$render($$result, { to: "third" }, {}, {
+			default: () => `Did something sweet today`
+		})}</li></ul>
 
-	  ${validate_component(Route, 'Route').$$render($$result, { path: "first" }, {}, {
-		default: () => `
-	    <p>
-	      I did something cool today. Lorem ipsum dolor sit amet, consectetur 
-	      adipisicing elit. Quisquam rerum asperiores, ex animi sunt ipsum. Voluptas 
-	      sint id hic. Vel neque maxime exercitationem facere culpa nisi, nihil 
-	      incidunt quo nostrum, beatae dignissimos dolores natus quaerat! Quasi sint 
-	      praesentium inventore quidem, deserunt atque ipsum similique dolores maiores
-	      expedita, qui totam. Totam et incidunt assumenda quas explicabo corporis 
-	      eligendi amet sint ducimus, culpa fugit esse. Tempore dolorum sit 
-	      perspiciatis corporis molestias nemo, veritatis, asperiores earum! 
-	      Ex repudiandae aperiam asperiores esse minus veniam sapiente corrupti 
-	      alias deleniti excepturi saepe explicabo eveniet harum fuga numquam 
-	      nostrum adipisci pariatur iusto sint, impedit provident repellat quis?
-	    </p>
-	  `
-	})}
-	  ${validate_component(Route, 'Route').$$render($$result, { path: "second" }, {}, {
-		default: () => `
-	    <p>
-	      I did something awesome today. Lorem ipsum dolor sit amet, consectetur 
-	      adipisicing elit. Repudiandae enim quasi animi, vero deleniti dignissimos 
-	      sapiente perspiciatis. Veniam, repellendus, maiores.
-	    </p>
-	  `
-	})}
-	  ${validate_component(Route, 'Route').$$render($$result, { path: "third" }, {}, {
-		default: () => `
-	    <p>
-	      I did something sweet today. Lorem ipsum dolor sit amet, consectetur 
-	      adipisicing elit. Modi ad voluptas rem consequatur commodi minima doloribus 
-	      veritatis nam, quas, culpa autem repellat saepe quam deleniti maxime delectus 
-	      fuga totam libero sit neque illo! Sapiente consequatur rem minima expedita 
-	      nemo blanditiis, aut veritatis alias nostrum vel? Esse molestias placeat, 
-	      doloribus commodi.
-	    </p>
-	  `
-	})}
-	`
+  ${validate_component(Route, "Route").$$render($$result, { path: "first" }, {}, {
+			default: () => `<p>I did something cool today. Lorem ipsum dolor sit amet, consectetur 
+      adipisicing elit. Quisquam rerum asperiores, ex animi sunt ipsum. Voluptas 
+      sint id hic. Vel neque maxime exercitationem facere culpa nisi, nihil 
+      incidunt quo nostrum, beatae dignissimos dolores natus quaerat! Quasi sint 
+      praesentium inventore quidem, deserunt atque ipsum similique dolores maiores
+      expedita, qui totam. Totam et incidunt assumenda quas explicabo corporis 
+      eligendi amet sint ducimus, culpa fugit esse. Tempore dolorum sit 
+      perspiciatis corporis molestias nemo, veritatis, asperiores earum! 
+      Ex repudiandae aperiam asperiores esse minus veniam sapiente corrupti 
+      alias deleniti excepturi saepe explicabo eveniet harum fuga numquam 
+      nostrum adipisci pariatur iusto sint, impedit provident repellat quis?
+    </p>`
+		})}
+  ${validate_component(Route, "Route").$$render($$result, { path: "second" }, {}, {
+			default: () => `<p>I did something awesome today. Lorem ipsum dolor sit amet, consectetur 
+      adipisicing elit. Repudiandae enim quasi animi, vero deleniti dignissimos 
+      sapiente perspiciatis. Veniam, repellendus, maiores.
+    </p>`
+		})}
+  ${validate_component(Route, "Route").$$render($$result, { path: "third" }, {}, {
+			default: () => `<p>I did something sweet today. Lorem ipsum dolor sit amet, consectetur 
+      adipisicing elit. Modi ad voluptas rem consequatur commodi minima doloribus 
+      veritatis nam, quas, culpa autem repellat saepe quam deleniti maxime delectus 
+      fuga totam libero sit neque illo! Sapiente consequatur rem minima expedita 
+      nemo blanditiis, aut veritatis alias nostrum vel? Esse molestias placeat, 
+      doloribus commodi.
+    </p>`
+		})}`
 	})}`;
 });
 
-/* src/App.svelte generated by Svelte v3.2.2 */
+/* src/App.svelte generated by Svelte v3.31.0 */
 
-const App = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
-	
-
-  // Used for SSR. A falsy value is ignored by the Router.
-  let { url = "" } = $$props;
-
+const App = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+	let { url = "" } = $$props;
 	if ($$props.url === void 0 && $$bindings.url && url !== void 0) $$bindings.url(url);
 
-	return `${validate_component(Router, 'Router').$$render($$result, { url: url }, {}, {
-		default: () => `
-	  <nav>
-	    ${validate_component(NavLink, 'NavLink').$$render($$result, { to: "/" }, {}, { default: () => `Home` })}
-	    ${validate_component(NavLink, 'NavLink').$$render($$result, { to: "about" }, {}, { default: () => `About` })}
-	    ${validate_component(NavLink, 'NavLink').$$render($$result, { to: "blog" }, {}, { default: () => `Blog` })}
-	  </nav>
-	  <div>
-	    ${validate_component(Route, 'Route').$$render($$result, { path: "about", component: About }, {}, {})}
-	    ${validate_component(Route, 'Route').$$render($$result, { path: "blog", component: Blog }, {}, {})}
-	    ${validate_component(Route, 'Route').$$render($$result, { path: "/", component: Home }, {}, {})}
-	  </div>
-	`
+	return `${validate_component(Router, "Router").$$render($$result, { url }, {}, {
+		default: () => `<nav>${validate_component(NavLink, "NavLink").$$render($$result, { to: "/" }, {}, { default: () => `Home` })}
+    ${validate_component(NavLink, "NavLink").$$render($$result, { to: "about" }, {}, { default: () => `About` })}
+    ${validate_component(NavLink, "NavLink").$$render($$result, { to: "blog" }, {}, { default: () => `Blog` })}</nav>
+  <div>${validate_component(Route, "Route").$$render($$result, { path: "about", component: About }, {}, {})}
+    ${validate_component(Route, "Route").$$render($$result, { path: "blog/*", component: Blog }, {}, {})}
+    ${validate_component(Route, "Route").$$render($$result, { path: "/", component: Home }, {}, {})}</div>`
 	})}`;
 });
 
