@@ -38,6 +38,6 @@
   }
 </script>
 
-<a href="{href}" aria-current="{ariaCurrent}" on:click="{onClick}" {...props}>
+<a href="{href}" aria-current="{ariaCurrent}" on:click="{onClick}" {...props} {...$$restProps}>
   <slot></slot>
 </a>
