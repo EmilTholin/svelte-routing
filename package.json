@@ -4,7 +4,7 @@
   "description": "A declarative Svelte routing library with SSR support",
   "main": "src/index.js",
   "svelte": "src/index.js",
-  "types": "index.d.ts",
+  "types": "types/index.d.ts",
   "author": "Emil Tholin @EmilTholin",
   "license": "MIT",
   "repository": "EmilTholin/svelte-routing",
