@@ -35,7 +35,14 @@ declare module 'svelte-routing' {
     to: string
     replace?: boolean
     state?: {}
-    getProps?: () => ({})
+    getProps?: (linkParams: GetPropsParams) => Record<string, any>
+  }
+
+  interface GetPropsParams {
+    location: RouteLocation
+    href: string
+    isPartiallyCurrent: boolean
+    isCurrent: boolean
   }
 
 	export const Router: SvelteComponentTyped<RouterProps>
