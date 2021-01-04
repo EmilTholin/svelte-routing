@@ -18,13 +18,15 @@ declare module 'svelte-routing' {
     }
   }
 
+  type State = {
+    [k in string | number]: unknown
+  }
+
   interface RouteLocation {
     pathname: string
     search: string
     hash?: string
-    state: {
-      [k in string | number]: unknown
-    }
+    state: State
   }
 
   interface RouteParams {
@@ -34,7 +36,7 @@ declare module 'svelte-routing' {
   interface LinkProps {
     to: string
     replace?: boolean
-    state?: {}
+    state?: State
     getProps?: (linkParams: GetPropsParams) => Record<string, any>
   }
 
