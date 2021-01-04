@@ -50,7 +50,7 @@ declare module 'svelte-routing' {
 	export const Router: SvelteComponentTyped<RouterProps>
 	export const Route: SvelteComponentTyped<RouteProps, Record<string, any>, RouteSlots>
 	export const Link: SvelteComponentTyped<LinkProps>
-	export const navigate: (to: string, { replace, state }: { replace?: boolean; state: object }) => void
+	export const navigate: (to: string, { replace, state }: { replace?: boolean; state: State }) => void
 	export const link: (node: Element) => { destroy(): void }
 	export const links: (node: Element) => { destroy(): void }
 }
