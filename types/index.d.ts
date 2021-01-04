@@ -10,6 +10,7 @@ declare module 'svelte-routing' {
   interface RouteProps {
     path?: string
     component?: SvelteComponent
+    [additionalProp: string]: unknown
   }
 
   interface RouteSlots {
