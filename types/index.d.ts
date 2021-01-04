@@ -1,4 +1,5 @@
 declare module 'svelte-routing' {
+  import 'svelte2tsx/svelte-jsx'
   import { SvelteComponent, SvelteComponentTyped } from 'svelte'
   
   interface RouterProps {
@@ -49,7 +50,14 @@ declare module 'svelte-routing' {
 
 	export const Router: SvelteComponentTyped<RouterProps>
 	export const Route: SvelteComponentTyped<RouteProps, Record<string, any>, RouteSlots>
-	export const Link: SvelteComponentTyped<LinkProps>
+  export const Link: SvelteComponentTyped<
+    Omit<
+      LinkProps &
+        svelte.JSX.HTMLProps<HTMLAnchorElement> &
+        svelte.JSX.SapperAnchorProps,
+      "href"
+    >
+  >
 	export const navigate: (to: string, { replace, state }: { replace?: boolean; state: State }) => void
 	export const link: (node: Element) => { destroy(): void }
 	export const links: (node: Element) => { destroy(): void }

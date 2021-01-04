@@ -10,5 +10,9 @@
   "repository": "EmilTholin/svelte-routing",
   "peerDependencies": {
     "svelte": "^3.20.x"
+  },
+  "devDependencies": {
+    "svelte": "^3.31.1",
+    "svelte2tsx": "^0.1.157"
   }
 }
