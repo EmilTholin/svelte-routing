@@ -127,4 +127,4 @@
   });
 </script>
 
-<slot></slot>
+<slot location={$location}></slot>
