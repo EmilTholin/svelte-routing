@@ -1,5 +1,5 @@
-export { default as Router } from './Router'
-export { default as Route } from './Route'
-export { default as Link } from './Link'
+export { Router } from './Router'
+export { Route } from './Route'
+export { Link } from './Link'
 export { link, links } from './actions'
 export { navigate } from './functions'

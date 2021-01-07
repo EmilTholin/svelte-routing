@@ -1,3 +1,4 @@
+import 'svelte2tsx/svelte-jsx'
 import { SvelteComponentTyped } from 'svelte'
 import { RouteLocation } from './Route'
 
@@ -21,4 +22,4 @@ type Link = SvelteComponentTyped<
   Omit<LinkProps & svelte.JSX.HTMLProps<HTMLAnchorElement> & svelte.JSX.SapperAnchorProps, 'href'>
 >
 
-export default Link
+export { Link }

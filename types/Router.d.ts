@@ -7,4 +7,4 @@ interface RouterProps {
 
 type Router = SvelteComponentTyped<RouterProps>
 
-export default Router
+export { Router }

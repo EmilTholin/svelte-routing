@@ -26,7 +26,6 @@ interface RouteParams {
   [param: string]: string
 }
 
-type Router = SvelteComponentTyped<RouteProps, Record<string, any>, RouteSlots>
+type Route = SvelteComponentTyped<RouteProps, Record<string, any>, RouteSlots>
 
-export default Router
-export { RouteLocation }
+export { Route, RouteLocation }
