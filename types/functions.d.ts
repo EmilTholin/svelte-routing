@@ -3,9 +3,9 @@ type navigate = (
   {
     replace,
     state
-  }: {
+  }?: {
     replace?: boolean
-    state: {
+    state?: {
       [k in string | number]: unknown
     }
   }
