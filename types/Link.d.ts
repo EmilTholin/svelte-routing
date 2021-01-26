@@ -18,8 +18,6 @@ interface GetPropsParams {
   isCurrent: boolean;
 }
 
-type Link = SvelteComponentTyped<
+export class Link extends SvelteComponentTyped<
   Omit<LinkProps & svelte.JSX.HTMLProps<HTMLAnchorElement> & svelte.JSX.SapperAnchorProps, 'href'>
->;
-
-export { Link };
+> {}
