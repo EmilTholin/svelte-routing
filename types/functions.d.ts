@@ -4,11 +4,11 @@ type navigate = (
     replace,
     state
   }?: {
-    replace?: boolean
+    replace?: boolean;
     state?: {
-      [k in string | number]: unknown
-    }
+      [k in string | number]: unknown;
+    };
   }
-) => void
+) => void;
 
-export { navigate }
+export { navigate };

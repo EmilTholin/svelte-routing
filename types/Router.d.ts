@@ -1,10 +1,10 @@
-import { SvelteComponentTyped } from 'svelte'
+import { SvelteComponentTyped } from 'svelte';
 
 interface RouterProps {
-  basepath?: string
-  url?: string
+  basepath?: string;
+  url?: string;
 }
 
-type Router = SvelteComponentTyped<RouterProps>
+type Router = SvelteComponentTyped<RouterProps>;
 
-export { Router }
+export { Router };
