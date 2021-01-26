@@ -1,4 +1,4 @@
-type navigate = (
+export const navigate: (
   to: string,
   {
     replace,
@@ -10,5 +10,3 @@ type navigate = (
     };
   }
 ) => void;
-
-export { navigate };
