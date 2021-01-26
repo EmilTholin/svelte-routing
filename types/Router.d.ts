@@ -5,6 +5,4 @@ interface RouterProps {
   url?: string;
 }
 
-type Router = SvelteComponentTyped<RouterProps>;
-
-export { Router };
+export class Router extends SvelteComponentTyped<RouterProps> {}
