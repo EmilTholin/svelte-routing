@@ -2,7 +2,7 @@ import { SvelteComponent, SvelteComponentTyped } from 'svelte';
 
 interface RouteProps {
   path?: string;
-  component?: SvelteComponent;
+  component?: typeof SvelteComponent;
   [additionalProp: string]: unknown;
 }
 
