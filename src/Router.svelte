@@ -72,17 +72,14 @@
       }
     } else {
       routes.update(rs => {
-        rs.push(route);
-        return rs;
+        return [ ...rs, route ];
       });
     }
   }
 
   function unregisterRoute(route) {
     routes.update(rs => {
-      const index = rs.indexOf(route);
-      rs.splice(index, 1);
-      return rs;
+      return rs.filter((r) => r !== route);
     });
   }
 
@@ -91,9 +88,11 @@
   $: {
     const { path: basepath } = $base;
     routes.update(rs => {
-      rs.forEach(r => (r.path = combinePaths(basepath, r._path)));
-      return rs;
-    });
+      return rs.map((r) => ({
+        ...r,
+        path: combinePaths(basepath, r._path)
+      }));
+    });      
   }
   // This reactive statement will be run when the Router is created
   // when there are no Routes and then again the following tick, so it
