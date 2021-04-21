@@ -41,6 +41,7 @@ export default [
   {
     input: "src/App.svelte",
     output: {
+      exports: "default",
       sourcemap: false,
       format: "cjs",
       name: "app",
