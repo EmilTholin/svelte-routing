@@ -1,3 +1,6 @@
+# 1.6.0
+Added TypeScript support.
+
 # 1.4.0
 
 Added functionality for passing the `location` to the rendered Route `component` and slot.
