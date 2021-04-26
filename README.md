@@ -181,7 +181,27 @@ In the browser we wait until all child `Route` components have registered with t
 
 We therefore resort to picking the first matching `Route` that is registered on the server, so it is of utmost importance that you `sort your Route components from the most specific to the least specific if you are using SSR`.
 
+## Vite JS Caveat
+
+Vite JS's dev server pre bundles `svelte-routing` incorrectly, causing two copies of internal variables to exist and break the routing.
+We need to add `optimizeDeps: {exclude: ["svelte-routing"]}` to `vite.config.js` to work around this.
+
+Example `vite.config.js`:
+```js
+import { defineConfig } from "vite";
+import svelte from "@sveltejs/vite-plugin-svelte";
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [svelte()],
+  optimizeDeps: {exclude: ["svelte-routing"]}
+});
+```
+
+See https://github.com/vitejs/vite/issues/3155 for more information.
+
 [npm]: https://img.shields.io/npm/v/svelte-routing.svg
 [npm-url]: https://npmjs.com/package/svelte-routing
 [example-folder-url]: https://github.com/EmilTholin/svelte-routing/tree/master/example
 [example-folder-navlink]: https://github.com/EmilTholin/svelte-routing/tree/master/example/src/components/NavLink.svelte
+
