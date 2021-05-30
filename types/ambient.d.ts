@@ -1,5 +1,5 @@
 declare module 'svelte-routing/src/history' {
-  const getLocation: (source: typeof window) => typeof window & { state: any; key: any };
+  const getLocation: (source: typeof window) => Location & { state: any; key: any };
 
   type Listener = (params: {
     location: ReturnType<typeof getLocation>;
