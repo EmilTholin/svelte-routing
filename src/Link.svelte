@@ -22,7 +22,8 @@
     location: $location,
     href,
     isPartiallyCurrent,
-    isCurrent
+    isCurrent,
+    existingProps: $$restProps
   });
 
   function onClick(event) {

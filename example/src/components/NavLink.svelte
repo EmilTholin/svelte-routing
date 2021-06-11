@@ -3,14 +3,15 @@
 
   export let to = "";
 
-  function getProps({ location, href, isPartiallyCurrent, isCurrent }) {
+  function getProps({ location, href, isPartiallyCurrent, isCurrent, existingProps }) {
     const isActive = href === "/" ? isCurrent : isPartiallyCurrent || isCurrent;
 
-    // The object returned here is spread on the anchor element's attributes
+    let classNames = existingProps.class || '';
     if (isActive) {
-      return { class: "active" };
+      classNames += ' active';
     }
-    return {};
+
+    return { class: classNames };
   }
 </script>
 
