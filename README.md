@@ -181,6 +181,10 @@ In the browser we wait until all child `Route` components have registered with t
 
 We therefore resort to picking the first matching `Route` that is registered on the server, so it is of utmost importance that you `sort your Route components from the most specific to the least specific if you are using SSR`.
 
+## Redirection
+
+A `Redirect` component was discussed but ultimately dissmissed as it is suggested to redirect server-side. If you want to redirect on the client-side, a custom component is the best option. For an example of such a component and more detail on the issue, take a look at [#137](https://github.com/EmilTholin/svelte-routing/issues/137#issuecomment-630757381).
+
 [npm]: https://img.shields.io/npm/v/svelte-routing.svg
 [npm-url]: https://npmjs.com/package/svelte-routing
 [example-folder-url]: https://github.com/EmilTholin/svelte-routing/tree/master/example
