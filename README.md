@@ -27,16 +27,16 @@ npm install --save svelte-routing
   export let url = "";
 </script>
 
-<Router url="{url}">
+<Router {url}>
   <nav>
     <Link to="/">Home</Link>
     <Link to="about">About</Link>
     <Link to="blog">Blog</Link>
   </nav>
   <div>
-    <Route path="blog/:id" component="{BlogPost}" />
-    <Route path="blog" component="{Blog}" />
-    <Route path="about" component="{About}" />
+    <Route path="blog/:id" component={BlogPost} />
+    <Route path="blog" component={Blog} />
+    <Route path="about" component={About} />
     <Route path="/"><Home /></Route>
   </div>
 </Router>
