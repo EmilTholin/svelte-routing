@@ -175,7 +175,7 @@ An action used on a root element to make all relative anchor elements navigate a
 </div>
 ```
 
-## SSR Caveat
+## SSR (server-side rendering) Caveat
 
 In the browser we wait until all child `Route` components have registered with their ancestor `Router` component before we let the `Router` pick the best match. This approach is not possible on the server, because when all `Route` components have registered and it is time to pick a match the SSR has already completed, and a document with no matching route will be returned.
 
@@ -185,3 +185,20 @@ We therefore resort to picking the first matching `Route` that is registered on 
 [npm-url]: https://npmjs.com/package/svelte-routing
 [example-folder-url]: https://github.com/EmilTholin/svelte-routing/tree/master/example
 [example-folder-navlink]: https://github.com/EmilTholin/svelte-routing/tree/master/example/src/components/NavLink.svelte
+
+## SPA (single-page app) Caveat
+
+If your application is static (and therefore all routing occurs client-side), you will need to forward 404s to your `index.html` (where your Svelte app is mounted) so that non-root routes can be handled on initial page load.
+
+For example, if using Sirv, enable the "single" option which serves `index.html` as the fallback.
+
+```
+/** package.json **/
+...
+"scripts": {
+    "start": "sirv public --single"
+    ...
+}
+```
+
+Otherwise, consult the documentation of your webserver for instructions on how to redirect requests (also known as URL-rewrites).
