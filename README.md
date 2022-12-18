@@ -2,6 +2,9 @@
 
 # Svelte Routing
 
+> **Warning**
+> Use [`SvelteKit`](https://kit.svelte.dev/) instead of `svelte-routing` for new projects. It's a more versatile solution in every possible way.
+
 A declarative Svelte routing library with SSR support.
 
 ## Getting started
