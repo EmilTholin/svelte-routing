@@ -1,5 +1,11 @@
 # CHANGELOG
 
+# 1.8.2
+
+-   Svelte dependency updated.
+-   Lazyload component return type added.
+-   Issue Fixed [#240](https://github.com/EmilTholin/svelte-routing/issues/240).
+
 # 1.8.0
 
 -   Major Bugs fixed in `Router.svelte`.
@@ -30,8 +36,6 @@
 
 # 1.7.0
 
--   Fork of Svelte Routing.
-    [Original Repo](https://github.com/EmilTholin/svelte-routing)
 -   Added Code of Conduct.
 -   Optimized the codebase.
 -   Update the dependencies.
