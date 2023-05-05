@@ -21,7 +21,7 @@
 ```html
 <!-- Page.svelte -->
 <script>
-    import { useLocation } from "svelte-routing-next";
+    import { useLocation } from "svelte-routing";
     const location = useLocation();
 </script>
 

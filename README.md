@@ -13,7 +13,7 @@ Look at the [example folder][example-folder-url] for an example project setup.
 ## Install
 
 ```bash
-npm i -D svelte-routing-next
+npm i -D svelte-routing
 ```
 
 ## Usage
@@ -21,7 +21,7 @@ npm i -D svelte-routing-next
 ```html
 <!-- App.svelte -->
 <script>
-  import { Router, Link, Route } from "svelte-routing-next";
+  import { Router, Link, Route } from "svelte-routing";
   import Home from "./routes/Home.svelte";
   import About from "./routes/About.svelte";
   import Blog from "./routes/Blog.svelte";
@@ -134,7 +134,7 @@ in the `Link` component.
 
 ```html
 <script>
-    import { navigate } from "svelte-routing-next";
+    import { navigate } from "svelte-routing";
 
     function onSubmit() {
         login().then(() => {
@@ -152,7 +152,7 @@ adding a new one.
 
 ```html
 <script>
-    import { link } from "svelte-routing-next";
+    import { link } from "svelte-routing";
 </script>
 
 <Router>
@@ -173,7 +173,7 @@ it to use the native browser action.
 ```html
 <!-- App.svelte -->
 <script>
-    import { links } from "svelte-routing-next";
+    import { links } from "svelte-routing";
 </script>
 
 <div use:links>
