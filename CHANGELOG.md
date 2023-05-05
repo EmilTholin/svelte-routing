@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 1.8.3
+
+-   Hooks & Types bugs fixed
+
 # 1.8.2
 
 -   Svelte dependency updated.
