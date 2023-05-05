@@ -10,28 +10,30 @@ import { shouldNavigate, hostMatches } from "./utils.js";
  * <a href="/post/{postId}" use:link>{post.title}</a>
  * ```
  */
-function link(node) {
-  function onClick(event) {
-    const anchor = event.currentTarget;
+const link = (node) => {
+    const onClick = (event) => {
+        const anchor = event.currentTarget;
 
-    if (
-      anchor.target === "" &&
-      hostMatches(anchor) &&
-      shouldNavigate(event)
-    ) {
-      event.preventDefault();
-      navigate(anchor.pathname + anchor.search, { replace: anchor.hasAttribute("replace") });
-    }
-  }
+        if (
+            anchor.target === "" &&
+            hostMatches(anchor) &&
+            shouldNavigate(event)
+        ) {
+            event.preventDefault();
+            navigate(anchor.pathname + anchor.search, {
+                replace: anchor.hasAttribute("replace"),
+            });
+        }
+    };
 
-  node.addEventListener("click", onClick);
+    node.addEventListener("click", onClick);
 
-  return {
-    destroy() {
-      node.removeEventListener("click", onClick);
-    }
-  };
-}
+    return {
+        destroy() {
+            node.removeEventListener("click", onClick);
+        },
+    };
+};
 
 /**
  * An action to be added at a root element of your application to
@@ -50,36 +52,35 @@ function link(node) {
  * </div>
  * ```
  */
-function links(node) {
-  function findClosest(tagName, el) {
-    while (el && el.tagName !== tagName) {
-      el = el.parentNode;
-    }
-    return el;
-  }
+const links = (node) => {
+    const findClosest = (tagName, el) => {
+        while (el && el.tagName !== tagName) el = el.parentNode;
+        return el;
+    };
 
-  function onClick(event) {
-    const anchor = findClosest("A", event.target);
+    const onClick = (event) => {
+        const anchor = findClosest("A", event.target);
+        if (
+            anchor &&
+            anchor.target === "" &&
+            hostMatches(anchor) &&
+            shouldNavigate(event) &&
+            !anchor.hasAttribute("noroute")
+        ) {
+            event.preventDefault();
+            navigate(anchor.pathname + anchor.search, {
+                replace: anchor.hasAttribute("replace"),
+            });
+        }
+    };
 
-    if (
-      anchor &&
-      anchor.target === "" &&
-      hostMatches(anchor) &&
-      shouldNavigate(event) &&
-      !anchor.hasAttribute("noroute")
-    ) {
-      event.preventDefault();
-      navigate(anchor.pathname + anchor.search, { replace: anchor.hasAttribute("replace") });
-    }
-  }
+    node.addEventListener("click", onClick);
 
-  node.addEventListener("click", onClick);
-
-  return {
-    destroy() {
-      node.removeEventListener("click", onClick);
-    }
-  };
-}
+    return {
+        destroy() {
+            node.removeEventListener("click", onClick);
+        },
+    };
+};
 
 export { link, links };
