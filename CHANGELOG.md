@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 1.8.4
+
+-   Issue Fixed [#241](https://github.com/EmilTholin/svelte-routing/issues/241)
+
 # 1.8.3
 
 -   Hooks & Types bugs fixed

@@ -20,8 +20,10 @@
     $: if ($activeRoute && $activeRoute.route === route) {
         const { path: p, component: c, ...rest } = $$props;
         if (p === route._path) {
-            if (c.toString().startsWith("class")) component = c;
-            else component = c();
+            if (c && typeof c === "function") {
+                component = c;
+                if (c.toString().startsWith("() => ")) component = c();
+            }
             path = p;
             routeProps = rest;
             routeParams = $activeRoute.params;
@@ -39,16 +41,16 @@
     }
 </script>
 
-{#if component && $activeRoute && $activeRoute.route === route}
-    {#await component then resolvedComponent}
-        {#if resolvedComponent}
+{#if $activeRoute && $activeRoute.route === route}
+    {#if component}
+        {#await component then resolvedComponent}
             <svelte:component
                 this={resolvedComponent?.default || resolvedComponent}
                 {...routeParams}
                 {...routeProps}
             />
-        {:else}
-            <slot params={routeParams} />
-        {/if}
-    {/await}
+        {/await}
+    {:else}
+        <slot params={routeParams} />
+    {/if}
 {/if}
