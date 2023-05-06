@@ -20,9 +20,9 @@
     $: if ($activeRoute && $activeRoute.route === route) {
         const { path: p, component: c, ...rest } = $$props;
         if (p === route._path) {
-            if (c && typeof c === "function") {
-                component = c;
-                if (c.toString().startsWith("() => ")) component = c();
+            if (c) {
+                if (c.toString().startsWith("class ")) component = c;
+                else component = c();
             }
             path = p;
             routeProps = rest;
