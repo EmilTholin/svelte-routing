@@ -1,5 +1,10 @@
 # CHANGELOG
 
+# 1.8.5
+
+-   Can Use Dom function improved
+-   function & class mismatch bug fixed
+
 # 1.8.4
 
 -   Issue Fixed [#241](https://github.com/EmilTholin/svelte-routing/issues/241)
