@@ -17,35 +17,32 @@
         default: path === "",
     };
 
-    $: if ($activeRoute && $activeRoute.route === route) {
-        const { path: p, component: c, ...rest } = $$props;
-        if (p === route._path) {
-            if (c) {
-                if (c.toString().startsWith("class ")) component = c;
-                else component = c();
-            }
-            path = p;
-            routeProps = rest;
+    $: {
+        if ($activeRoute && $activeRoute.route === route) {
             routeParams = $activeRoute.params;
+        }
+
+        const { component: c, path, ...rest } = $$props;
+        routeProps = rest;
+
+        if (c) {
+            if (c.toString().startsWith("class ")) component = c;
+            else component = c();
         }
     }
 
     registerRoute(route);
 
-    // There is no need to unregister Routes in SSR since it will all be
-    // thrown away anyway.
-    if (typeof window !== "undefined") {
-        onDestroy(() => {
-            unregisterRoute(route);
-        });
-    }
+    onDestroy(() => {
+        unregisterRoute(route);
+    });
 </script>
 
 {#if $activeRoute && $activeRoute.route === route}
     {#if component}
         {#await component then resolvedComponent}
             <svelte:component
-                this={resolvedComponent?.default || resolvedComponent}
+                this={resolvedComponent}
                 {...routeParams}
                 {...routeProps}
             />

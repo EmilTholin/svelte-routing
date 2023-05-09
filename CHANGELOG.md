@@ -1,5 +1,10 @@
 # CHANGELOG
 
+# 1.8.6
+
+-   Svelte version update
+-   Issue Fixed [#242](https://github.com/EmilTholin/svelte-routing/issues/242)
+
 # 1.8.5
 
 -   Can Use Dom function improved

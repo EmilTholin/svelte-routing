@@ -34,11 +34,17 @@ const rankRoute = (route, index) => {
         ? 0
         : segmentize(route.path).reduce((score, segment) => {
               score += SEGMENT_POINTS;
-              if (segment === "") score += ROOT_POINTS;
-              else if (PARAM.test(segment)) score += DYNAMIC_POINTS;
-              else if (segment[0] === "*")
+
+              if (segment === "") {
+                  score += ROOT_POINTS;
+              } else if (PARAM.test(segment)) {
+                  score += DYNAMIC_POINTS;
+              } else if (segment[0] === "*") {
                   score -= SEGMENT_POINTS + SPLAT_PENALTY;
-              else score += STATIC_POINTS;
+              } else {
+                  score += STATIC_POINTS;
+              }
+
               return score;
           }, 0);
 
@@ -123,7 +129,7 @@ const pick = (routes, uri) => {
                 break;
             }
 
-            if (uriSegment === undefined) {
+            if (!uriSegment) {
                 // URI is shorter than the route, no match
                 // uri:   /users
                 // route: /users/:userId

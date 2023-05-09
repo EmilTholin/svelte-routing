@@ -37,7 +37,7 @@
 
     const routerBase = derived([base, activeRoute], ([base, activeRoute]) => {
         // If there is no activeRoute, the routerBase will be identical to the base.
-        if (activeRoute === null) return base;
+        if (!activeRoute) return base;
 
         const { path: basepath } = base;
         const { route, uri } = activeRoute;
@@ -64,6 +64,7 @@
             if (hasActiveRoute) return;
 
             const matchingRoute = pick([route], $location.pathname);
+
             if (matchingRoute) {
                 activeRoute.set(matchingRoute);
                 hasActiveRoute = true;
@@ -92,8 +93,9 @@
     // will not find an active Route in SSR and in the browser it will only
     // pick an active Route after all Routes have been registered.
     $: {
-        if (!caseSensitive)
+        if (!caseSensitive) {
             $location.pathname = $location.pathname.toLowerCase();
+        }
 
         const bestMatch = pick($routes, $location.pathname);
         activeRoute.set(bestMatch);
@@ -103,11 +105,13 @@
         // The topmost Router in the tree is responsible for updating
         // the location store and supplying it through context.
         onMount(() => {
-            const unlisten = history.listen((event) =>
-                location.set(event.location)
-            );
+            const unlisten = history.listen((event) => {
+                location.set(event.location);
+            });
+
             return unlisten;
         });
+
         setContext(LOCATION, location);
     }
 
@@ -120,4 +124,4 @@
     });
 </script>
 
-<slot route={$activeRoute && $activeRoute.uri} location={$location} />
+<slot active={$activeRoute && $activeRoute.uri} location={$location} />
