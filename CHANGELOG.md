@@ -4,6 +4,7 @@
 
 -   Svelte version update
 -   Issue Fixed [#242](https://github.com/EmilTholin/svelte-routing/issues/242)
+-   Codebase improved
 
 # 1.8.5
 
