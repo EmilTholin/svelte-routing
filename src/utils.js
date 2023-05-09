@@ -129,7 +129,7 @@ const pick = (routes, uri) => {
                 break;
             }
 
-            if (!uriSegment) {
+            if (typeof uriSegment === "undefined") {
                 // URI is shorter than the route, no match
                 // uri:   /users
                 // route: /users/:userId

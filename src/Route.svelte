@@ -42,7 +42,7 @@
     {#if component}
         {#await component then resolvedComponent}
             <svelte:component
-                this={resolvedComponent}
+                this={resolvedComponent?.default || resolvedComponent}
                 {...routeParams}
                 {...routeProps}
             />
