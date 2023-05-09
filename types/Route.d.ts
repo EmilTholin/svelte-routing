@@ -1,8 +1,10 @@
 import { SvelteComponent, SvelteComponentTyped } from "svelte";
 
+type AsyncSvelteComponent = () => Promise<typeof SvelteComponent>;
+
 type RouteProps = {
     path?: string;
-    component?: typeof SvelteComponent | Promise<typeof SvelteComponent>;
+    component?: typeof SvelteComponent | AsyncSvelteComponent;
     [additionalProp: string]: unknown;
 };
 
