@@ -7,7 +7,6 @@
 
     export let basepath = "/";
     export let url = null;
-    export let caseSensitive = false;
     export let history = globalHistory;
 
     setContext(HISTORY, history);
@@ -93,10 +92,6 @@
     // will not find an active Route in SSR and in the browser it will only
     // pick an active Route after all Routes have been registered.
     $: {
-        if (!caseSensitive) {
-            $location.pathname = $location.pathname.toLowerCase();
-        }
-
         const bestMatch = pick($routes, $location.pathname);
         activeRoute.set(bestMatch);
     }
@@ -124,4 +119,4 @@
     });
 </script>
 
-<slot active={$activeRoute && $activeRoute.uri} location={$location} />
+<slot route={$activeRoute && $activeRoute.uri} location={$location} />

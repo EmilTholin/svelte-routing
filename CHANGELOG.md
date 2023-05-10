@@ -1,5 +1,15 @@
 # CHANGELOG
 
+# 1.8.8
+
+-   Issue Fixed [#242](https://github.com/EmilTholin/svelte-routing/issues/242)
+-   PR Removed [#77](https://github.com/EmilTholin/svelte-routing/pull/77).
+    Removed case sensitive prop.
+
+# 1.8.7
+
+-   Segment mismatch bug fixed
+
 # 1.8.6
 
 -   Svelte version update
