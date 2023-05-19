@@ -1,10 +1,15 @@
 # CHANGELOG
 
+# 1.8.9
+
+-   Fixed. Sometimes navigate return info null.
+-   Issue fixed[#132](https://github.com/EmilTholin/svelte-routing/issues/132)
+
 # 1.8.8
 
 -   Issue Fixed [#242](https://github.com/EmilTholin/svelte-routing/issues/242)
 -   PR Removed [#77](https://github.com/EmilTholin/svelte-routing/pull/77).
-    Removed case sensitive prop.
+    Causing infinity loop in nested routes.
 
 # 1.8.7
 

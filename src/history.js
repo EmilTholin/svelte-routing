@@ -2,6 +2,8 @@
  * Adapted from https://github.com/reach/router/blob/b60e6dd781d5d3a4bdaaf4de665649c0f6a7e78d/src/lib/history.js
  * https://github.com/reach/router/blob/master/LICENSE
  */
+import { canUseDOM } from "./utils";
+
 const getLocation = (source) => {
     return {
         ...source.location,
@@ -39,8 +41,8 @@ const createHistory = (source) => {
             state = { ...state, key: Date.now() + "" };
             // try...catch iOS Safari limits to 100 pushState calls
             try {
-                if (replace) source.history.replaceState(state, null, to);
-                else source.history.pushState(state, null, to);
+                if (replace) source.history.replaceState(state, "", to);
+                else source.history.pushState(state, "", to);
             } catch (e) {
                 source.location[replace ? "replace" : "assign"](to);
             }
@@ -90,8 +92,6 @@ const createMemorySource = (initialPathname = "/") => {
 };
 // Global history uses window.history as the source if available,
 // otherwise a memory history
-const canUseDOM = typeof window !== "undefined" && "document" in window;
-
 const globalHistory = createHistory(canUseDOM ? window : createMemorySource());
 const { navigate } = globalHistory;
 

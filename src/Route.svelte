@@ -1,6 +1,7 @@
 <script>
     import { getContext, onDestroy } from "svelte";
     import { ROUTER } from "./contexts.js";
+    import { canUseDOM } from "./utils.js";
 
     export let path = "";
     export let component = null;
@@ -24,6 +25,8 @@
 
         const { component: c, path, ...rest } = $$props;
         routeProps = rest;
+
+        canUseDOM && window?.scrollTo(0, 0);
 
         if (c) {
             if (c.toString().startsWith("class ")) component = c;

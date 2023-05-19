@@ -262,6 +262,8 @@ const hostMatches = (anchor) => {
     );
 };
 
+const canUseDOM = typeof window !== "undefined" && "document" in window;
+
 export {
     stripSlashes,
     pick,
@@ -269,4 +271,5 @@ export {
     combinePaths,
     shouldNavigate,
     hostMatches,
+    canUseDOM,
 };
