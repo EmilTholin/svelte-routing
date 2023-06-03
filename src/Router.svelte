@@ -1,9 +1,9 @@
 <script>
-    import { getContext, setContext, onMount } from "svelte";
-    import { writable, derived } from "svelte/store";
-    import { LOCATION, ROUTER, HISTORY } from "./contexts.js";
+    import { getContext, onMount, setContext } from "svelte";
+    import { derived, writable } from "svelte/store";
+    import { HISTORY, LOCATION, ROUTER } from "./contexts.js";
     import { globalHistory } from "./history.js";
-    import { pick, combinePaths } from "./utils.js";
+    import { combinePaths, pick } from "./utils.js";
 
     export let basepath = "/";
     export let url = null;

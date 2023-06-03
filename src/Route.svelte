@@ -18,20 +18,18 @@
         default: path === "",
     };
 
-    $: {
-        if ($activeRoute && $activeRoute.route === route) {
-            routeParams = $activeRoute.params;
-        }
+    $: if ($activeRoute && $activeRoute.route === route) {
+        routeParams = $activeRoute.params;
 
         const { component: c, path, ...rest } = $$props;
         routeProps = rest;
-
-        canUseDOM && window?.scrollTo(0, 0);
 
         if (c) {
             if (c.toString().startsWith("class ")) component = c;
             else component = c();
         }
+
+        canUseDOM() && window?.scrollTo(0, 0);
     }
 
     registerRoute(route);

@@ -262,7 +262,10 @@ const hostMatches = (anchor) => {
     );
 };
 
-const canUseDOM = typeof window !== "undefined" && "document" in window;
+const canUseDOM = () =>
+    typeof window !== "undefined" &&
+    "document" in window &&
+    "location" in window;
 
 export {
     stripSlashes,

@@ -1,6 +1,6 @@
 <script>
-    import { getContext, createEventDispatcher } from "svelte";
-    import { LOCATION, ROUTER, HISTORY } from "./contexts.js";
+    import { createEventDispatcher, getContext } from "svelte";
+    import { HISTORY, LOCATION, ROUTER } from "./contexts.js";
     import { resolve, shouldNavigate } from "./utils.js";
 
     export let to = "#";

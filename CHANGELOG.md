@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 1.9.0
+
+-   Major improvement in performance. Minimize unnecessary prefetch components.
+
 # 1.8.9
 
 -   Fixed. Sometimes navigate return info null.
