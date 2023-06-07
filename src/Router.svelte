@@ -81,10 +81,7 @@
     $: {
         const { path: basepath } = $base;
         routes.update((rs) =>
-            rs.map((r) => ({
-                ...r,
-                path: combinePaths(basepath, r._path),
-            }))
+            rs.map((r) => Object.assign(r, { path: combinePaths(basepath, r._path) }))
         );
     }
     // This reactive statement will be run when the Router is created
