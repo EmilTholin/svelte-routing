@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 1.10.0
+
+-   PR Merged [#243](https://github.com/EmilTholin/svelte-routing/pull/243).
+
 # 1.9.0
 
 -   Major improvement in performance. Minimize unnecessary prefetch components.
