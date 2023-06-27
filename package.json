@@ -1,6 +1,6 @@
 {
     "name": "svelte-routing",
-    "version": "1.10.0",
+    "version": "2.0.0",
     "author": "Emil Tholin @EmilTholin",
     "license": "MIT",
     "description": "A declarative Svelte routing library with SSR support",
@@ -20,6 +20,6 @@
     "types": "types/index.d.ts",
     "svelte": "src/index.js",
     "devDependencies": {
-        "svelte": "^3.59.1"
+        "svelte": "^4.0.0"
     }
 }
