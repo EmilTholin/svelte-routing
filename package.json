@@ -20,6 +20,6 @@
     "types": "types/index.d.ts",
     "svelte": "src/index.js",
     "devDependencies": {
-        "svelte": "^4.0.0"
+        "svelte": "^4.0.1"
     }
 }
