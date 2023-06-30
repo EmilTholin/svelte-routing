@@ -1,4 +1,4 @@
-import { SvelteComponentTyped } from "svelte";
+import { SvelteComponent } from "svelte";
 import { RouteLocation } from "./Route";
 
 type LinkProps = {
@@ -17,7 +17,7 @@ type GetPropsParams = {
     isCurrent: boolean;
 };
 
-export class Link extends SvelteComponentTyped<
+export class Link extends SvelteComponent<
     Omit<
         LinkProps &
             svelte.JSX.HTMLProps<HTMLAnchorElement> &
