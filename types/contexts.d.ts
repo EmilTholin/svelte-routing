@@ -6,6 +6,6 @@ type LOCATION = RouteLocation;
 type ROUTER = RouterProps;
 type HISTORY = Record<string | number, any>;
 
-export const useLocation: () => typeof getContext<LOCATION>;
-export const useRouter: () => typeof getContext<ROUTER>;
-export const useHistory: () => typeof getContext<HISTORY>;
+export const useLocation: () => ReturnType<typeof getContext<LOCATION>>;
+export const useRouter: () => ReturnType<typeof getContext<ROUTER>>;
+export const useHistory: () => ReturnType<typeof getContext<HISTORY>>;
