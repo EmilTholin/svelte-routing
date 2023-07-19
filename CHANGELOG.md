@@ -4,6 +4,7 @@
 
 -   PR Merged [#247](https://github.com/EmilTholin/svelte-routing/pull/247)
 -   Svelte version update
+-   Removing example folder. It's too old & does not support lazy loading.
 
 # 1.11.0
 
