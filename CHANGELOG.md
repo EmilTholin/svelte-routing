@@ -2,15 +2,15 @@
 
 # 2.0.0
 
--   PR Merged [#250](https://github.com/EmilTholin/svelte-routing/pull/250)
--   PR Merged [#247](https://github.com/EmilTholin/svelte-routing/pull/247)
--   Svelte version update
+-   PR Merged [#250](https://github.com/EmilTholin/svelte-routing/pull/250).
+-   PR Merged [#247](https://github.com/EmilTholin/svelte-routing/pull/247).
+-   Svelte version update.
 -   Removing example folder.
 
 # 1.11.0
 
--   PR Merged [#245](https://github.com/EmilTholin/svelte-routing/pull/245)
--   Svelte version update
+-   PR Merged [#245](https://github.com/EmilTholin/svelte-routing/pull/245).
+-   Svelte version update.
 
 # 1.10.0
 
@@ -23,36 +23,36 @@
 # 1.8.9
 
 -   Fixed. Sometimes navigate return info null.
--   Issue fixed[#132](https://github.com/EmilTholin/svelte-routing/issues/132)
+-   Issue fixed[#132](https://github.com/EmilTholin/svelte-routing/issues/132).
 
 # 1.8.8
 
--   Issue Fixed [#242](https://github.com/EmilTholin/svelte-routing/issues/242)
--   PR Removed [#77](https://github.com/EmilTholin/svelte-routing/pull/77).
+-   Issue Fixed [#242](https://github.com/EmilTholin/svelte-routing/issues/242).
+-   PR Removed [#77](https://github.com/EmilTholin/svelte-routing/pull/77)
     Causing infinity loop in nested routes.
 
 # 1.8.7
 
--   Segment mismatch bug fixed
+-   Segment mismatch bug fixed.
 
 # 1.8.6
 
--   Svelte version update
--   Issue Fixed [#242](https://github.com/EmilTholin/svelte-routing/issues/242)
--   Codebase improved
+-   Svelte version update.
+-   Issue Fixed [#242](https://github.com/EmilTholin/svelte-routing/issues/242).
+-   Codebase improved.
 
 # 1.8.5
 
--   Can Use Dom function improved
--   function & class mismatch bug fixed
+-   Can Use Dom function improved.
+-   function & class mismatch bug fixed.
 
 # 1.8.4
 
--   Issue Fixed [#241](https://github.com/EmilTholin/svelte-routing/issues/241)
+-   Issue Fixed [#241](https://github.com/EmilTholin/svelte-routing/issues/241).
 
 # 1.8.3
 
--   Hooks & Types bugs fixed
+-   Hooks & Types bugs fixed.
 
 # 1.8.2
 
