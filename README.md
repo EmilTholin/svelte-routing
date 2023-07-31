@@ -6,10 +6,6 @@ A declarative Svelte routing library with SSR support.
 
 [[CHANGELOG][changelog-url]]
 
-## Getting started
-
-Look at the [example folder][example-folder-url] for an example project setup.
-
 ## Install
 
 ```bash
@@ -78,12 +74,12 @@ A component used to navigate around the application.
 
 ###### Properties
 
-|  Property  | Required | Default Value | Description                                                                                                                                                                                                                                                                                                                                                                               |
-| :--------: | :------: | :-----------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|    `to`    |   ✔ ️    |     `"#"`     | URL the component should link to.                                                                                                                                                                                                                                                                                                                                                         |
-| `replace`  |          |    `false`    | When `true`, clicking the `Link` will replace the current entry in the history stack instead of adding a new one.                                                                                                                                                                                                                                                                         |
-|  `state`   |          |     `{}`      | An object that will be pushed to the history stack when the `Link` is clicked.                                                                                                                                                                                                                                                                                                            |
-| `getProps` |          | `() => ({})`  | A function that returns an object that will be spread on the underlying anchor element's attributes. The first argument given to the function is an object with the properties `location`, `href`, `isPartiallyCurrent`, `isCurrent`. Look at the [`NavLink` component in the example project setup][example-folder-navlink] to see how you can build your own link components with this. |
+|  Property  | Required | Default Value | Description                                                                                                                                                                                                                           |
+| :--------: | :------: | :-----------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+|    `to`    |   ✔ ️    |     `"#"`     | URL the component should link to.                                                                                                                                                                                                     |
+| `replace`  |          |    `false`    | When `true`, clicking the `Link` will replace the current entry in the history stack instead of adding a new one.                                                                                                                     |
+|  `state`   |          |     `{}`      | An object that will be pushed to the history stack when the `Link` is clicked.                                                                                                                                                        |
+| `getProps` |          | `() => ({})`  | A function that returns an object that will be spread on the underlying anchor element's attributes. The first argument given to the function is an object with the properties `location`, `href`, `isPartiallyCurrent`, `isCurrent`. |
 
 #### `Route`
 
@@ -198,9 +194,5 @@ terms or conditions. [**Code of Conduct**](CODE_OF_CONDUCT.md).
 
 [npm]: https://img.shields.io/npm/v/svelte-routing.svg
 [npm-url]: https://npmjs.com/package/svelte-routing
-[example-folder-url]:
-    https://github.com/EmilTholin/svelte-routing/tree/master/example
-[example-folder-navlink]:
-    https://github.com/EmilTholin/svelte-routing/tree/master/example/src/components/NavLink.svelte
 [changelog-url]:
     https://github.com/EmilTholin/svelte-routing/blob/master/CHANGELOG.md
