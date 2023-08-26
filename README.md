@@ -22,7 +22,7 @@ npm i -D svelte-routing
   import About from "./routes/About.svelte";
   import Blog from "./routes/Blog.svelte";
 
-  export let url = "/";
+  export let url = "";
 </script>
 
 <Router {url}>
