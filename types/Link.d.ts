@@ -1,4 +1,5 @@
 import { SvelteComponent } from "svelte";
+import { HTMLAnchorAttributes } from "svelte/elements";
 import { RouteLocation } from "./Route";
 
 type LinkProps = {
@@ -20,8 +21,7 @@ type GetPropsParams = {
 export class Link extends SvelteComponent<
     Omit<
         LinkProps &
-            svelte.JSX.HTMLProps<HTMLAnchorElement> &
-            svelte.JSX.SapperAnchorProps,
+        HTMLAnchorAttributes,
         "href"
     >
 > {}
