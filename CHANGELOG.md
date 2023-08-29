@@ -1,5 +1,12 @@
 # CHANGELOG
 
+# 2.1.0
+
+-   PR Merged [#256](https://github.com/EmilTholin/svelte-routing/pull/256).
+-   PR Merged [#257](https://github.com/EmilTholin/svelte-routing/pull/257).
+-   Issue Fixed [#254](https://github.com/EmilTholin/svelte-routing/issues/254).
+-   Update svelte version.
+
 # 2.0.0
 
 -   PR Merged [#250](https://github.com/EmilTholin/svelte-routing/pull/250).
@@ -23,7 +30,7 @@
 # 1.8.9
 
 -   Fixed. Sometimes navigate return info null.
--   Issue fixed[#132](https://github.com/EmilTholin/svelte-routing/issues/132).
+-   Issue Fixed [#132](https://github.com/EmilTholin/svelte-routing/issues/132).
 
 # 1.8.8
 
