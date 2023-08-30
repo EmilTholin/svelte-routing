@@ -80,7 +80,7 @@ A component used to navigate around the application.
 |    `replace`     |          |    `false`    | When `true`, clicking the `Link` will replace the current entry in the history stack instead of adding a new one.                                                                                                                     |
 |     `state`      |          |     `{}`      | An object that will be pushed to the history stack when the `Link` is clicked.                                                                                                                                                        |
 |    `getProps`    |          | `() => ({})`  | A function that returns an object that will be spread on the underlying anchor element's attributes. The first argument given to the function is an object with the properties `location`, `href`, `isPartiallyCurrent`, `isCurrent`. |
-| `preserveScroll` |          |    `false`    | When `true`, clicking the `Link` will scroll the page to the top.                                                                                                                                                                     |
+| `preserveScroll` |          |    `false`    | When `true`, clicking the `Link` will not scroll the page to the top.                                                                                                                                                                 |
 
 #### `Route`
 
