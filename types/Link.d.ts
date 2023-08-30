@@ -5,6 +5,7 @@ import { RouteLocation } from "./Route";
 type LinkProps = {
     to: string;
     replace?: boolean;
+    preserveScroll?: boolean;
     state?: {
         [k in string | number]: unknown;
     };

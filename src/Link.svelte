@@ -7,6 +7,7 @@
     export let replace = false;
     export let state = {};
     export let getProps = () => ({});
+    export let preserveScroll = false;
 
     const location = getContext(LOCATION);
     const { base } = getContext(ROUTER);
@@ -33,7 +34,7 @@
             // Don't push another entry to the history stack when the user
             // clicks on a Link to the page they are currently on.
             const shouldReplace = $location.pathname === href || replace;
-            navigate(href, { state, replace: shouldReplace });
+            navigate(href, { state, replace: shouldReplace, preserveScroll });
         }
     };
 </script>
