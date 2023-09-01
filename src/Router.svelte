@@ -76,6 +76,9 @@
     const unregisterRoute = (route) => {
         routes.update((rs) => rs.filter((r) => r !== route));
     };
+
+		let preserveScroll = false;
+
     // This reactive statement will update all the Routes' path when
     // the basepath changes.
     $: {
@@ -90,7 +93,7 @@
     // pick an active Route after all Routes have been registered.
     $: {
         const bestMatch = pick($routes, $location.pathname);
-        activeRoute.set(bestMatch);
+        activeRoute.set({...bestMatch, preserveScroll});
     }
 
     if (!locationContext) {
@@ -98,6 +101,7 @@
         // the location store and supplying it through context.
         onMount(() => {
             const unlisten = history.listen((event) => {
+                preserveScroll = event.preserveScroll || false;
                 location.set(event.location);
             });
 

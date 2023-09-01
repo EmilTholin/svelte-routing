@@ -29,7 +29,7 @@
             else component = c();
         }
 
-        canUseDOM() && window?.scrollTo(0, 0);
+       canUseDOM() && !$activeRoute.preserveScroll && window?.scrollTo(0, 0);
     }
 
     registerRoute(route);

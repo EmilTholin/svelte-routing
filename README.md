@@ -74,12 +74,13 @@ A component used to navigate around the application.
 
 ###### Properties
 
-|  Property  | Required | Default Value | Description                                                                                                                                                                                                                           |
-| :--------: | :------: | :-----------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-|    `to`    |   ✔ ️    |     `"#"`     | URL the component should link to.                                                                                                                                                                                                     |
-| `replace`  |          |    `false`    | When `true`, clicking the `Link` will replace the current entry in the history stack instead of adding a new one.                                                                                                                     |
-|  `state`   |          |     `{}`      | An object that will be pushed to the history stack when the `Link` is clicked.                                                                                                                                                        |
-| `getProps` |          | `() => ({})`  | A function that returns an object that will be spread on the underlying anchor element's attributes. The first argument given to the function is an object with the properties `location`, `href`, `isPartiallyCurrent`, `isCurrent`. |
+|     Property     | Required | Default Value | Description                                                                                                                                                                                                                           |
+|:----------------:| :------: | :-----------: |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|       `to`       |   ✔ ️    |     `"#"`     | URL the component should link to.                                                                                                                                                                                                     |
+|    `replace`     |          |    `false`    | When `true`, clicking the `Link` will replace the current entry in the history stack instead of adding a new one.                                                                                                                     |
+|     `state`      |          |     `{}`      | An object that will be pushed to the history stack when the `Link` is clicked.                                                                                                                                                        |
+|    `getProps`    |          | `() => ({})`  | A function that returns an object that will be spread on the underlying anchor element's attributes. The first argument given to the function is an object with the properties `location`, `href`, `isPartiallyCurrent`, `isCurrent`. |
+| `preserveScroll` |          |    `false`    | When `true`, clicking the `Link` will not scroll the page to the top.                                                                                                                                                                 |
 
 #### `Route`
 
@@ -125,7 +126,7 @@ those use cases where a `Link` component is not suitable, e.g. after submitting
 a form.
 
 The first argument is a string denoting where to navigate to, and the second
-argument is an object with a `replace` and `state` property equivalent to those
+argument is an object with a `replace`, `state` and `preserveScroll` properties equivalent to those
 in the `Link` component.
 
 ```html
@@ -144,7 +145,7 @@ in the `Link` component.
 
 An action used on anchor tags to navigate around the application. You can add an
 attribute `replace` to replace the current entry in the history stack instead of
-adding a new one.
+adding a new one and `preserveScroll` to not scroll the page to the top when clicked.
 
 ```html
 <script>
@@ -162,7 +163,8 @@ adding a new one.
 
 An action used on a root element to make all relative anchor elements navigate
 around the application. You can add an attribute `replace` on any anchor to
-replace the current entry in the history stack instead of adding a new one. You
+replace the current entry in the history stack instead of adding a new one.
+You can add an attribute `preserveScroll` on any anchor to not to scroll the page to the top when clicked. You
 can add an attribute `noroute` for this action to skip over the anchor and allow
 it to use the native browser action.
 

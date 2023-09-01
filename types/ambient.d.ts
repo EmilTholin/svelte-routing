@@ -13,7 +13,7 @@ declare module "svelte-routing/src/history" {
         listen: (listener: Listener) => () => void;
         navigate: (
             to?: string | null,
-            options?: { replace: boolean; state: any }
+            options?: { replace: boolean; preserveScroll: boolean; state: any }
         ) => void;
     };
 

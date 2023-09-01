@@ -37,7 +37,7 @@ const createHistory = (source) => {
             };
         },
 
-        navigate(to, { state, replace = false } = {}) {
+        navigate(to, { state, replace = false, preserveScroll = false } = {}) {
             state = { ...state, key: Date.now() + "" };
             // try...catch iOS Safari limits to 100 pushState calls
             try {
@@ -48,7 +48,7 @@ const createHistory = (source) => {
             }
             location = getLocation(source);
             listeners.forEach((listener) =>
-                listener({ location, action: "PUSH" })
+                listener({ location, action: "PUSH", preserveScroll })
             );
             document.activeElement.blur();
         },

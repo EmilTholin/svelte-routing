@@ -22,6 +22,7 @@ const link = (node) => {
             event.preventDefault();
             navigate(anchor.pathname + anchor.search, {
                 replace: anchor.hasAttribute("replace"),
+                preserveScroll: anchor.hasAttribute("preserveScroll"),
             });
         }
     };
@@ -70,6 +71,7 @@ const links = (node) => {
             event.preventDefault();
             navigate(anchor.pathname + anchor.search, {
                 replace: anchor.hasAttribute("replace"),
+                preserveScroll: anchor.hasAttribute("preserveScroll"),
             });
         }
     };
