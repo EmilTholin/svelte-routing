@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 2.2.0
+
+-   PR Merged (#258)[https://github.com/EmilTholin/svelte-routing/pull/258]
+
 # 2.1.0
 
 -   PR Merged [#256](https://github.com/EmilTholin/svelte-routing/pull/256).
