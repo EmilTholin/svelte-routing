@@ -1,5 +1,9 @@
 # CHANGELOG
 
+#
+
+- Added Prettier
+
 # 2.2.0
 
 -   PR Merged (#258)[https://github.com/EmilTholin/svelte-routing/pull/258]
