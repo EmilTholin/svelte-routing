@@ -8,7 +8,7 @@ export const navigate: (
         replace?: boolean;
         state?: {
             [k in string | number]: unknown;
-        },
+        };
         preserveScroll?: boolean;
     }
 ) => void;

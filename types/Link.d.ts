@@ -20,9 +20,5 @@ type GetPropsParams = {
 };
 
 export class Link extends SvelteComponent<
-    Omit<
-        LinkProps &
-        HTMLAnchorAttributes,
-        "href"
-    >
+    Omit<LinkProps & HTMLAnchorAttributes, "href">
 > {}

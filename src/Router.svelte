@@ -7,7 +7,14 @@
 
     export let basepath = "/";
     export let url = null;
+    export let viewtransition = null;
     export let history = globalHistory;
+
+    const viewtransitionFn = (node, _, direction) => {
+        const vt = viewtransition(direction);
+        if (typeof vt?.fn === "function") return vt.fn(node, vt);
+        else return vt;
+    };
 
     setContext(HISTORY, history);
 
@@ -77,14 +84,16 @@
         routes.update((rs) => rs.filter((r) => r !== route));
     };
 
-		let preserveScroll = false;
+    let preserveScroll = false;
 
     // This reactive statement will update all the Routes' path when
     // the basepath changes.
     $: {
         const { path: basepath } = $base;
         routes.update((rs) =>
-            rs.map((r) => Object.assign(r, { path: combinePaths(basepath, r._path) }))
+            rs.map((r) =>
+                Object.assign(r, { path: combinePaths(basepath, r._path) })
+            )
         );
     }
     // This reactive statement will be run when the Router is created
@@ -93,7 +102,7 @@
     // pick an active Route after all Routes have been registered.
     $: {
         const bestMatch = pick($routes, $location.pathname);
-        activeRoute.set({...bestMatch, preserveScroll});
+        activeRoute.set({ ...bestMatch, preserveScroll });
     }
 
     if (!locationContext) {
@@ -120,4 +129,15 @@
     });
 </script>
 
-<slot route={$activeRoute && $activeRoute.uri} location={$location} />
+{#if viewtransition}
+    {#key $location.pathname}
+        <div in:viewtransitionFn out:viewtransitionFn>
+            <slot
+                route={$activeRoute && $activeRoute.uri}
+                location={$location}
+            />
+        </div>
+    {/key}
+{:else}
+    <slot route={$activeRoute && $activeRoute.uri} location={$location} />
+{/if}

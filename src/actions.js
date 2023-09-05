@@ -35,7 +35,6 @@ const link = (node) => {
         },
     };
 };
-
 /**
  * An action to be added at a root element of your application to
  * capture all relative links and push them onto the history stack.

@@ -4,3 +4,5 @@ yarn.lock
 example/public/*
 !example/public/global.css
 pnpm-lock.yaml
+.idea
+.DS_Store
