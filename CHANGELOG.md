@@ -1,8 +1,9 @@
 # CHANGELOG
 
-#
+# 2.3.0
 
-- Added Prettier
+-   Added Prettier
+-   Added View Transition (Experimental)
 
 # 2.2.0
 
