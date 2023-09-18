@@ -1,8 +1,7 @@
 import { SvelteComponent } from "svelte";
-import { TransitionConfig } from "svelte/transition";
 
 type Viewtransition = {
-    fn?: TransitionConfig;
+    fn?: any;
     delay?: number;
     duration?: number;
     x?: number;
@@ -15,7 +14,7 @@ type Viewtransition = {
 type RouterProps = {
     basepath?: string;
     url?: string;
-    viewtransition?: (direction: "in" | "out" | "both") => Viewtransition;
+    viewtransition?: (direction?: string) => Viewtransition;
 };
 
 export class Router extends SvelteComponent<RouterProps> {}

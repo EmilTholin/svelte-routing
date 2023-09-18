@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 2.4.0
+
+-   Fixed viewtransition callback function error
+
 # 2.3.0
 
 -   Added Prettier
