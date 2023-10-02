@@ -1,5 +1,10 @@
 # CHANGELOG
 
+# 2.5.0
+
+-   Issue Fixed [#260](https://github.com/EmilTholin/svelte-routing/issues/260).
+-   Update svelte version.
+
 # 2.4.0
 
 -   Fixed viewtransition callback function error

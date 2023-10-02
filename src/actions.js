@@ -15,7 +15,7 @@ const link = (node) => {
         const anchor = event.currentTarget;
 
         if (
-            anchor.target === "" &&
+            (anchor.target === "" || anchor.target === "_self") &&
             hostMatches(anchor) &&
             shouldNavigate(event)
         ) {
@@ -62,7 +62,7 @@ const links = (node) => {
         const anchor = findClosest("A", event.target);
         if (
             anchor &&
-            anchor.target === "" &&
+            (anchor.target === "" || anchor.target === "_self") &&
             hostMatches(anchor) &&
             shouldNavigate(event) &&
             !anchor.hasAttribute("noroute")
