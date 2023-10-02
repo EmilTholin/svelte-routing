@@ -1,6 +1,6 @@
 {
     "name": "svelte-routing",
-    "version": "2.4.0",
+    "version": "2.5.0",
     "author": "Emil Tholin @EmilTholin",
     "license": "MIT",
     "description": "A declarative Svelte routing library with SSR support",
