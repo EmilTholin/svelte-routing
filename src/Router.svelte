@@ -102,7 +102,9 @@
     // pick an active Route after all Routes have been registered.
     $: {
         const bestMatch = pick($routes, $location.pathname);
-		activeRoute.set(bestMatch ? {...bestMatch, preserveScroll} : bestMatch);
+        activeRoute.set(
+            bestMatch ? { ...bestMatch, preserveScroll } : bestMatch
+        );
     }
 
     if (!locationContext) {
