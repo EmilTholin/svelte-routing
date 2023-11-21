@@ -1,9 +1,13 @@
 # CHANGELOG
 
+# 2.7.0
+-   PR Merged [#266](https://github.com/EmilTholin/svelte-routing/pull/266).
+-   Update dependencies.
+
 # 2.6.0
 
--   Issue Fixed [#262](https://github.com/EmilTholin/svelte-routing/issues/262)
--   PR Merged [#263](https://github.com/EmilTholin/svelte-routing/pull/263)
+-   Issue Fixed [#262](https://github.com/EmilTholin/svelte-routing/issues/262).
+-   PR Merged [#263](https://github.com/EmilTholin/svelte-routing/pull/263).
 -   Update svelte version.
 
 # 2.5.0
@@ -13,16 +17,16 @@
 
 # 2.4.0
 
--   Fixed viewtransition callback function error
+-   Fixed viewtransition callback function error.
 
 # 2.3.0
 
--   Added Prettier
--   Added View Transition (Experimental)
+-   Added Prettier.
+-   Added View Transition (Experimental).
 
 # 2.2.0
 
--   PR Merged [#258](https://github.com/EmilTholin/svelte-routing/pull/258)
+-   PR Merged [#258](https://github.com/EmilTholin/svelte-routing/pull/258).
 
 # 2.1.0
 
@@ -35,13 +39,13 @@
 
 -   PR Merged [#250](https://github.com/EmilTholin/svelte-routing/pull/250).
 -   PR Merged [#247](https://github.com/EmilTholin/svelte-routing/pull/247).
--   Svelte version update.
 -   Removing example folder.
+-   Update svelte version.
 
 # 1.11.0
 
 -   PR Merged [#245](https://github.com/EmilTholin/svelte-routing/pull/245).
--   Svelte version update.
+-   Update svelte version.
 
 # 1.10.0
 
@@ -68,8 +72,8 @@
 
 # 1.8.6
 
--   Svelte version update.
 -   Issue Fixed [#242](https://github.com/EmilTholin/svelte-routing/issues/242).
+-   Update svelte version.
 -   Codebase improved.
 
 # 1.8.5
