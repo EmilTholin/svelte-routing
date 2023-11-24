@@ -20,7 +20,7 @@
     "types": "types/index.d.ts",
     "exports": {
         ".": {
-            "svelte": "src/index.js"
+            "svelte": "./src/index.js"
         }
     },
     "devDependencies": {
