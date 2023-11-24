@@ -15,7 +15,7 @@
     const dispatch = createEventDispatcher();
 
     let href, isPartiallyCurrent, isCurrent, props;
-    $: href = to === "/" ? $base.uri : resolve(to, $base.uri);
+    $: href = resolve(to, $base.uri);
     $: isPartiallyCurrent = $location.pathname.startsWith(href);
     $: isCurrent = href === $location.pathname;
     $: ariaCurrent = isCurrent ? "page" : undefined;
