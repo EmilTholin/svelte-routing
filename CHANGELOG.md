@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 2.9.0
+-   PR Merged [#272](https://github.com/EmilTholin/svelte-routing/pull/272).
+-   Issue Fixed [#271](https://github.com/EmilTholin/svelte-routing/issues/271).
+
 # 2.8.0
 -   PR Merged [#267](https://github.com/EmilTholin/svelte-routing/pull/267).
 -   PR Merged [#270](https://github.com/EmilTholin/svelte-routing/pull/270).
