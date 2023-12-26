@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 2.11.0
+-   PR Merged [#277](https://github.com/EmilTholin/svelte-routing/pull/277)
+-   Update dependencies.
+
 # 2.10.0
 -   PR Removed [#266](https://github.com/EmilTholin/svelte-routing/pull/266)
 -   Issue Fixed [#273](https://github.com/EmilTholin/svelte-routing/issues/273)
