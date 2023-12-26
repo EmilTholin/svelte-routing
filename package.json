@@ -19,6 +19,13 @@
     "main": "./src/index.js",
     "types": "./types/index.d.ts",
     "svelte": "./src/index.js",
+    "exports": {
+        ".": {
+            "main": "./src/index.js",
+            "types": "./types/index.d.ts",
+            "svelte": "./src/index.js"
+        }
+    },
     "devDependencies": {
         "svelte": "^4.2.8",
         "prettier": "^3.1.0",
