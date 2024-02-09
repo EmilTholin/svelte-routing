@@ -1,3 +1,5 @@
+import { readable } from "svelte/store";
+
 type RouteConfig = {
     path: string;
     default: boolean;
@@ -16,9 +18,9 @@ type RouterBase = {
 }
 
 export type RouterContext = {
-    activeRoute: ActiveRoute;
-    base: RouterBase;
-    routerBase: RouterBase;
+    activeRoute: ReturnType<typeof readable<ActiveRoute>>;
+    base: ReturnType<typeof readable<RouterBase>>;
+    routerBase: ReturnType<typeof readable<RouterBase>>;
     registerRoute: (route: Omit<RouteConfig, 'default'>) => {};
     unregisterRouter: () => {}
 }
