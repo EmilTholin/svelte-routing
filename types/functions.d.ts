@@ -10,5 +10,6 @@ export const navigate: (
             [k in string | number]: unknown;
         };
         preserveScroll?: boolean;
+        blurActiveElement?: boolean;
     }
 ) => void;
