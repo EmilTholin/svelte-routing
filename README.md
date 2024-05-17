@@ -229,6 +229,10 @@ Unless you explicitly state otherwise, any contribution intentionally submitted
 for this project by you, shall be licensed as **MIT**, without any additional
 terms or conditions. [**Code of Conduct**](CODE_OF_CONDUCT.md).
 
+## Redirection
+
+A `Redirect` component was discussed but ultimately dissmissed as it is suggested to redirect server-side. If you want to redirect on the client-side, a custom component is the best option. For an example of such a component and more detail on the issue, take a look at [#137](https://github.com/EmilTholin/svelte-routing/issues/137#issuecomment-630757381).
+
 [npm]: https://img.shields.io/npm/v/svelte-routing.svg
 [npm-url]: https://npmjs.com/package/svelte-routing
 [changelog-url]: https://github.com/EmilTholin/svelte-routing/blob/master/CHANGELOG.md
