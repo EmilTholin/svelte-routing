@@ -95,6 +95,6 @@ const createMemorySource = (initialPathname = "/") => {
 const globalHistory = createHistory(
     canUseDOM() ? window : createMemorySource()
 );
-const { navigate } = globalHistory;
+const { navigate, listen } = globalHistory;
 
-export { globalHistory, navigate, createHistory, createMemorySource };
+export { globalHistory, navigate, listen, createHistory, createMemorySource };
