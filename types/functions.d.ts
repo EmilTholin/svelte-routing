@@ -13,3 +13,13 @@ export const navigate: (
         blurActiveElement?: boolean;
     }
 ) => void;
+
+export const listen: (
+    listener: (data: {
+        location: Location & {
+            state: any,
+            key: string
+        },
+        action: "POP"|"PUSH"
+    }) => void
+) => () => void;

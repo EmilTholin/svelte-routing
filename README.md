@@ -142,6 +142,24 @@ in the `Link` component.
 </script>
 ```
 
+#### `listen`
+
+A function that allows you to listen to path changes made from `navigate`, `Link` and browser back button.
+
+The argument supplied must be a function that receives a Location object. Use the returned function to unsubscribe the listener.
+
+This function is meant to be used outside a Svelte component. The alternative function is `useLocation`, `useRouter` and `useHistory` where it uses Svelte context to retrieve location, router or history object.
+
+```js
+import { listen as addListener } from 'svelte-routing';
+
+function init() {
+    addListener(({ location }) => {
+        console.log(location.pathname);
+    })
+}
+```
+
 #### `link`
 
 An action used on anchor tags to navigate around the application. You can add an
