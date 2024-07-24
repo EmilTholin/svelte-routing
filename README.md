@@ -197,7 +197,7 @@ _`builtin transition`_
     // ...
 </script>
 
-<Router viewtransition="{() => { fn: fade, duration: 500 }}">
+<Router viewtransition="{() => ({ fn: fade, duration: 500 })}">
     <Route path="/" component="{Home}" />
     <Route path="/contact" component="{Contact}" />
 </Router>
@@ -212,7 +212,7 @@ _`custom transition`_
 </script>
 
 <Router
-    viewtransition="{() => { duration: 500, easing: cubicin, css: (t) => `scale:${t};transform-origin:center center;` }}"
+    viewtransition="{() => ({ duration: 500, easing: cubicin, css: (t) => `scale:${t};transform-origin:center center;` })}"
 >
     <Route path="/" component="{Home}" />
     <Route path="/contact" component="{Contact}" />
