@@ -133,7 +133,7 @@
 
 {#if viewtransition}
     {#key $location.pathname}
-        <div in:viewtransitionFn out:viewtransitionFn>
+        <div in:viewtransitionFn>
             <slot
                 route={$activeRoute && $activeRoute.uri}
                 location={$location}
